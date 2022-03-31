@@ -4,11 +4,11 @@ import './calendar.css';
 
 function Calendar() {
   return (
-    <div className="calendar-wrapper">
-      <div className="weekdays-wrapper">
+    <div className="calendar">
+      <div className="weekdays">
         {weekDays}
       </div>
-      <div className="days-wrapper">
+      <div className="days">
         <CalendarDay />
         <CalendarDay />
         <CalendarDay />

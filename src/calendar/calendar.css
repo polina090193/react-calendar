@@ -1,4 +1,4 @@
-.calendar-wrapper {
+.calendar {
   display: flex;
   flex-direction: column;
   margin: auto;
@@ -6,7 +6,7 @@
   height: 100vh;
 }
 
-.days-wrapper {
+.days {
   display: flex;
   align-items: center;
   justify-content: space-between;
