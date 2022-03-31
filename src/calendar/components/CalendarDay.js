@@ -5,7 +5,7 @@ import { styled } from '@mui/material/styles';
 import yellow from "@mui/material/colors/yellow"
 
 const noteSizes = {
-  width: '20%',
+  width: '10%',
   height: '20%',
 }
 
@@ -21,7 +21,7 @@ const CalendarPaper = styled(Paper)`
   }
 `;
 
-function CalendarNote() {
+function CalendarDay() {
 
   return (
     <CalendarPaper>
@@ -30,4 +30,4 @@ function CalendarNote() {
   );
 }
 
-export default CalendarNote;
+export default CalendarDay;
