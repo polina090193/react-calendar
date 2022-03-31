@@ -1,14 +1,15 @@
 import CalendarDay from "./components/CalendarDay"
 import { weekDays } from '@/consts/days'
 import './calendar.css';
+import CalendarCss from './Calendar.module.css'
 
 function Calendar() {
   return (
-    <div className="calendar">
-      <div className="weekdays">
+    <div className={CalendarCss.calendar}>
+      <div className={CalendarCss.weekdays}>
         {weekDays}
       </div>
-      <div className="days">
+      <div className={CalendarCss.days}>
         <CalendarDay />
         <CalendarDay />
         <CalendarDay />
