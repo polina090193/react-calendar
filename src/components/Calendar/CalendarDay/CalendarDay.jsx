@@ -7,7 +7,6 @@ import yellow from "@mui/material/colors/yellow"
 import tasks from '@/fakeData/tasks'
 
 import Task from "@/components/Task/Task";
-import Button from '@mui/material/Button';
 import DialogTitle from '@mui/material/DialogTitle';
 import Dialog from '@mui/material/Dialog';
 import List from '@mui/material/List';
@@ -30,12 +29,6 @@ const CalendarPaper = styled(Paper)`
     color: #2e8b57;
   }
 `;
-
-/* export interface DayDialogProps {
-  open: boolean;
-  selectedValue: string;
-  onClose: (value: string) => void;
-} */
 
 const DayDialog = (props) => {
   const { onClose, open } = props;
