@@ -1,6 +1,5 @@
-import CalendarDay from "./components/CalendarDay"
+import CalendarDay from "./components/CalendarDay/CalendarDay"
 import { weekDays } from '@/consts/days'
-import './calendar.css';
 import CalendarCss from './Calendar.module.css'
 
 function Calendar() {
