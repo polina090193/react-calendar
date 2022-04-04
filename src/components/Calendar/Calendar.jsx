@@ -1,4 +1,4 @@
-import CalendarDay from "./components/CalendarDay/CalendarDay"
+import CalendarDay from "./CalendarDay/CalendarDay"
 import { weekDays } from '@/consts/days'
 import CalendarCss from './Calendar.module.css'
 

@@ -5,7 +5,7 @@ import { styled } from '@mui/material/styles';
 import yellow from "@mui/material/colors/yellow"
 import tasks from '@/fakeData/tasks'
 
-const tasksElements = tasks.map(task => <div>{task.content}</div>)
+const tasksElements = tasks.map(task => <li key={task.id}>{task.content}</li>)
 
 const noteSizes = {
   width: '10%',
@@ -29,7 +29,7 @@ function CalendarDay() {
   return (
     <CalendarPaper>
       <Typography variant="h5">Default Paper</Typography>
-      <div>{tasksElements}</div>
+      <ul>{tasksElements}</ul>
     </CalendarPaper>
   );
 }
