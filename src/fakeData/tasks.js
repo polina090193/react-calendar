@@ -1,9 +1,9 @@
-// import { TodoistApi } from '@doist/todoist-api-typescript'
+import { TodoistApi } from '@doist/todoist-api-typescript'
 
-// const todoAPI = new TodoistApi('7716d8a22975bcfb4e28ffb524e54fef937b616d')
-// const tasks = await todoAPI.getTasks({project_id: 2247409455})
+const todoAPI = new TodoistApi('7716d8a22975bcfb4e28ffb524e54fef937b616d')
+const tasks = await todoAPI.getTasks({project_id: 2247409455})
 
-const tasks = [
+/* const tasks = [
     {
       "id": 5030491647,
       "assigner": 0,
@@ -76,6 +76,6 @@ const tasks = [
       "created": "2021-02-28T19:21:07.278505Z",
       "url": "https://todoist.com/showTask?id=4618395182"
     }
-  ]
+  ] */
 
   export default tasks
