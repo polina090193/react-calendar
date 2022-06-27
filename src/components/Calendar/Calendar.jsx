@@ -2,20 +2,25 @@ import CalendarDay from "./CalendarDay/CalendarDay"
 import { weekDays } from '@/consts/days'
 import CalendarCss from './Calendar.module.css'
 
+const days = [
+  '2022/06/26',
+  '2022/06/27',
+  '2022/06/28',
+  '2022/06/29',
+  '2022/06/30',
+  '2022/07/01',
+  '2022/07/02',
+]
+
+const dates = weekDays.map((weekDay, index) => {
+  return {weekDay, date: days[index]}
+})
+
 function Calendar() {
   return (
     <div className={CalendarCss.calendar}>
-      <div className={CalendarCss.weekdays}>
-        {weekDays}
-      </div>
       <div className={CalendarCss.days}>
-        <CalendarDay weekDay="M" dayDate="2022/06/27" />
-        <CalendarDay weekDay="Tu" dayDate="2022/06/28" />
-        <CalendarDay weekDay="W" dayDate="2022/06/29" />
-        <CalendarDay weekDay="Th" dayDate="2022/06/30" />
-        <CalendarDay weekDay="F" dayDate="2022/07/01" />
-        <CalendarDay weekDay="Sa" dayDate="2022/07/02" />
-        <CalendarDay weekDay="Su" dayDate="2022/07/03" />
+        {dates.map(({weekDay, date}) => <CalendarDay key={date} weekDay={weekDay} dayDate={date} />)}
       </div>
     </div>
   );
