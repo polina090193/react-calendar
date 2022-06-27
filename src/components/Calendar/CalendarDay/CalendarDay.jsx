@@ -12,7 +12,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import Dialog from '@mui/material/Dialog';
 import List from '@mui/material/List';
 
-import { fetchTasks, selectTasks, selectTasksLoadingStatus, addTask, selectAddTaskStatus } from '@/redux/tasksSlice'
+import { fetchTasks, selectTasks, selectTasksLoadingStatus, addTask, selectChangeTasksStatus } from '@/redux/tasksSlice'
 
 const noteSizes = {
   width: '10%',
@@ -72,7 +72,7 @@ const DayDialog = (props) => {
   const dispatch = useDispatch()
 
   const { onClose, open } = props;
-  const addTaskStatus = useSelector(selectAddTaskStatus)
+  const changeTasksStatus = useSelector(selectChangeTasksStatus)
   const [isAddTaskFormActive, setIsAddTaskFormActive] = React.useState(false);
   const [addTaskText, setAddTaskText] = React.useState('');
   
@@ -97,10 +97,10 @@ const DayDialog = (props) => {
   }
   
   useEffect(() => {
-    if (addTaskStatus === 'success') {
+    if (changeTasksStatus === 'success') {
       dispatch(fetchTasks(props.dayDate))
     }
-  }, [addTaskStatus, props.dayDate, dispatch])
+  }, [changeTasksStatus, props.dayDate, dispatch])
   
   return (
     <Dialog onClose={handleClose} open={open}>

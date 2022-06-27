@@ -1,15 +1,24 @@
 import Checkbox from "@mui/material/Checkbox"
 import taskCss from './Task.module.css'
 import { Box } from "@mui/material";
+import { useDispatch } from 'react-redux'
 
-// const tasksElements = tasks.map(task => <Task key={task.id} id={task.id} content={task.content} />)
+import { closeTask } from '@/redux/tasksSlice'
 
-const Task = props => (
-  <Box>
-    <li className={taskCss.task} key={props.id}>
-      <Checkbox /> {props.content}
-    </li>
-  </Box>
-);
+const Task = props => {
+  const dispatch = useDispatch()
+
+  const handleCloseTask = () => {
+    dispatch(closeTask(props.id))
+  }
+
+  return (
+    <Box>
+      <li className={taskCss.task} key={props.id}>
+        <Checkbox onChange={handleCloseTask} /> {props.content}
+      </li>
+    </Box>
+  );
+} 
 
 export default Task;

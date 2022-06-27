@@ -23,4 +23,13 @@ export const tasksAPI = {
       console.log(err)
     }
   },
+
+  async closeTask(id) {
+    try {
+      const closedTask = await todoAPI.closeTask(id)
+      return closedTask
+    } catch (err) {
+      console.log(err)
+    }
+  },
 }
