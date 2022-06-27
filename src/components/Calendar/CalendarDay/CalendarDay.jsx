@@ -42,7 +42,7 @@ const CalendarDay = (props) => {
     }
   }, [tasksLoadingStatus, props.dayDate, dispatch])
 
-  const tasksElements = tasks.map(task => <Task key={task.id} id={task.id} content={task.content} />)
+  const tasksElements = tasks[props.dayDate]?.map(task => <Task key={task.id} id={task.id} content={task.content} />)
 
   const [open, setOpen] = React.useState(false);
 

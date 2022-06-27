@@ -5,7 +5,7 @@ export const tasksSlice = createSlice({
   name: 'tasks',
   initialState: {
     status: 'idle',
-    tasks: [],
+    tasks: {},
   },
   reducers: {},
   extraReducers(builder) {
@@ -15,7 +15,7 @@ export const tasksSlice = createSlice({
       })
       .addCase(fetchTasks.fulfilled, (state, action) => {
         state.status = 'success'
-        state.tasks = action.payload
+        state.tasks[action.payload.dayDate] = action.payload.tasks
       })
       .addCase(fetchTasks.rejected, (state, action) => {
         state.status = 'failed'
@@ -26,7 +26,7 @@ export const tasksSlice = createSlice({
 
 export const fetchTasks = createAsyncThunk('tasks/fetchTasks', async dayDate => {
     const res = await tasksAPI.getTasks(dayDate)
-    return res
+    return { dayDate, tasks: res }
   })
 
 
