@@ -4,22 +4,33 @@ import { tasksAPI } from "@/api"
 export const tasksSlice = createSlice({
   name: 'tasks',
   initialState: {
-    status: 'idle',
+    getTasksStatus: 'idle',
+    addTaskStatus: 'idle',
     tasks: {},
   },
   reducers: {},
   extraReducers(builder) {
     builder
       .addCase(fetchTasks.pending, (state) => {
-        state.status = 'loading'
+        state.getTasksStatus = 'loading'
       })
       .addCase(fetchTasks.fulfilled, (state, action) => {
-        state.status = 'success'
+        state.getTasksStatus = 'success'
         state.tasks[action.payload.dayDate] = action.payload.tasks
+        state.addTaskStatus = 'idle'
       })
       .addCase(fetchTasks.rejected, (state, action) => {
-        state.status = 'failed'
+        state.getTasksStatus = 'failed'
         console.error(action.error.message)
+      })
+      .addCase(addTask.pending, (state) => {
+        state.addTaskStatus = 'loading'
+      })
+      .addCase(addTask.fulfilled, (state, action) => {
+        state.addTaskStatus = 'success'
+      })
+      .addCase(addTask.rejected, (state, action) => {
+        state.addTaskStatus = 'failed'
       })
   }
 })
@@ -29,8 +40,14 @@ export const fetchTasks = createAsyncThunk('tasks/fetchTasks', async dayDate => 
     return { dayDate, tasks: res }
   })
 
+export const addTask = createAsyncThunk('tasks/addTask', async ({dayDate, text}) => {
+    const newTask = await tasksAPI.addTask(dayDate, text)
+    return newTask
+  })
+
 
 export const selectTasks = state => state.tasks.tasks
-export const selectTasksLoadingStatus = state => state.tasks.status
+export const selectTasksLoadingStatus = state => state.tasks.getTasksStatus
+export const selectAddTaskStatus = state => state.tasks.addTaskStatus
 
 export default tasksSlice.reducer

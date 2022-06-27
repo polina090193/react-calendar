@@ -12,7 +12,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import Dialog from '@mui/material/Dialog';
 import List from '@mui/material/List';
 
-import { fetchTasks, selectTasks, selectTasksLoadingStatus } from '@/redux/tasksSlice'
+import { fetchTasks, selectTasks, selectTasksLoadingStatus, addTask, selectAddTaskStatus } from '@/redux/tasksSlice'
 
 const noteSizes = {
   width: '10%',
@@ -57,30 +57,64 @@ const CalendarDay = (props) => {
   return (
     <CalendarPaper>
       <Typography variant="h5" sx={{cursor: 'pointer'}} onClick={handleClickOpen}>{props.weekDay}</Typography>
-      {<ul>{ tasksElements }</ul>}
+      <ul>{ tasksElements }</ul>
       <DayDialog
         open={open}
         onClose={handleClose}
         tasksElements={tasksElements}
+        dayDate={props.dayDate}
       />
     </CalendarPaper>
   );
 }
 
 const DayDialog = (props) => {
+  const dispatch = useDispatch()
 
   const { onClose, open } = props;
+  const addTaskStatus = useSelector(selectAddTaskStatus)
+  const [isAddTaskFormActive, setIsAddTaskFormActive] = React.useState(false);
+  const [addTaskText, setAddTaskText] = React.useState('');
   
   const handleClose = () => {
     onClose();
   };
+
+  const openAddTaskForm = () => {
+    setIsAddTaskFormActive(true);
+  };
+  
+  const closeAddTaskForm = () => {
+    setIsAddTaskFormActive(false);
+  };
+
+  const changeAddTaskText = (e) => {
+    setAddTaskText(e.currentTarget.value)
+  }
+  
+  const handleAddTask = () => {
+    dispatch(addTask({dayDate: props.dayDate, text: addTaskText}))
+  }
+  
+  useEffect(() => {
+    if (addTaskStatus === 'success') {
+      dispatch(fetchTasks(props.dayDate))
+    }
+  }, [addTaskStatus, props.dayDate, dispatch])
   
   return (
     <Dialog onClose={handleClose} open={open}>
-      <DialogTitle>Tasks</DialogTitle>
+      <DialogTitle>{props.dayDate}</DialogTitle>
       <List sx={{ pt: 0 }}>
         {props.tasksElements}
       </List>
+      { isAddTaskFormActive && <form>
+          <input type="text" onChange={changeAddTaskText} value={addTaskText} />
+          <button type="button" onClick={handleAddTask}>Add</button>
+          <button onClick={closeAddTaskForm}>X</button>
+        </form> }
+      <button onClick={openAddTaskForm}>+</button>
+
     </Dialog>
   );
 }
