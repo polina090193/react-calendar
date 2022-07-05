@@ -1,10 +1,9 @@
 import { TodoistApi } from '@doist/todoist-api-typescript'
 
-const todoAPI = new TodoistApi('7716d8a22975bcfb4e28ffb524e54fef937b616d')
+const todoAPI = new TodoistApi('7ad18f9fb8f4bfc89b333b417520354e1071fdab')
 
 export const tasksAPI = {
   async getTasks(dayDate) {
-    console.log('getTasks', dayDate)
     try {
       const tasks = await todoAPI.getTasks({ filter: dayDate })
       return tasks
