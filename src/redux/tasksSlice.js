@@ -16,10 +16,8 @@ export const tasksSlice = createSlice({
         state.getTasksStatus = 'loading'
       })
       .addCase(fetchTasks.fulfilled, (state, action) => {
-        console.log('fetchTasks')
         state.getTasksStatus = 'success'
         state.tasks[action.payload.dayDate] = action.payload.tasks
-        state.changeTasksStatus = 'idle'
       })
       .addCase(fetchTasks.rejected, (state, action) => {
         state.getTasksStatus = 'failed'
@@ -53,13 +51,15 @@ export const fetchTasks = createAsyncThunk('tasks/fetchTasks', async dayDate => 
   return { dayDate, tasks: res }
 })
 
-export const addTask = createAsyncThunk('tasks/addTask', async ({dayDate, text}) => {
-  const newTask = await tasksAPI.addTask(dayDate, text)
+export const addTask = createAsyncThunk('tasks/addTask', async ({dayDate, taskTitle}, {dispatch})  => {
+  const newTask = await tasksAPI.addTask(dayDate, taskTitle)
+  dispatch(fetchTasks(dayDate))
   return newTask
 })
 
-export const closeTask = createAsyncThunk('tasks/closeTask', async (id) => {
+export const closeTask = createAsyncThunk('tasks/closeTask', async ({id, dayDate}, {dispatch}) => {
   const closedTask = await tasksAPI.closeTask(id)
+  dispatch(fetchTasks(dayDate))
   return closedTask
 })
 

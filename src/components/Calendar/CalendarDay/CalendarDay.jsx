@@ -5,14 +5,11 @@ import Paper from "@mui/material/Paper"
 import Typography from "@mui/material/Typography"
 import { styled } from '@mui/material/styles';
 import yellow from "@mui/material/colors/yellow"
-// import tasks from '@/fakeData/tasks'
 
 import Task from "@/components/Task/Task";
-import DialogTitle from '@mui/material/DialogTitle';
-import Dialog from '@mui/material/Dialog';
-import List from '@mui/material/List';
+import DayDialog from '../DayDialog/DayDialog'
 
-import { fetchTasks, selectTasks, selectTasksLoadingStatus, addTask, selectChangeTasksStatus } from '@/redux/tasksSlice'
+import { fetchTasks, selectTasks, selectTasksLoadingStatus } from '@/redux/tasksSlice'
 
 const noteSizes = {
   width: '10%',
@@ -42,7 +39,7 @@ const CalendarDay = (props) => {
     }
   }, [tasksLoadingStatus, props.dayDate, dispatch])
 
-  const tasksElements = tasks[props.dayDate]?.map(task => <Task key={task.id} id={task.id} content={task.content} />)
+  const tasksElements = tasks[props.dayDate]?.map(task => <Task key={task.id} id={task.id} dayDate={props.dayDate} content={task.content} />)
 
   const [open, setOpen] = React.useState(false);
 
@@ -67,57 +64,5 @@ const CalendarDay = (props) => {
     </CalendarPaper>
   );
 }
-
-const DayDialog = (props) => {
-  const dispatch = useDispatch()
-
-  const { onClose, open } = props;
-  const changeTasksStatus = useSelector(selectChangeTasksStatus)
-  const [isAddTaskFormActive, setIsAddTaskFormActive] = React.useState(false);
-  const [addTaskText, setAddTaskText] = React.useState('');
-  
-  const handleClose = () => {
-    onClose();
-  };
-
-  const openAddTaskForm = () => {
-    setIsAddTaskFormActive(true);
-  };
-  
-  const closeAddTaskForm = () => {
-    setIsAddTaskFormActive(false);
-  };
-
-  const changeAddTaskText = (e) => {
-    setAddTaskText(e.currentTarget.value)
-  }
-  
-  const handleAddTask = () => {
-    dispatch(addTask({dayDate: props.dayDate, text: addTaskText}))
-  }
-  
-  useEffect(() => {
-    if (changeTasksStatus === 'success') {
-      dispatch(fetchTasks(props.dayDate))
-    }
-  }, [changeTasksStatus, props.dayDate, dispatch])
-  
-  return (
-    <Dialog onClose={handleClose} open={open}>
-      <DialogTitle>{props.dayDate}</DialogTitle>
-      <List sx={{ pt: 0 }}>
-        {props.tasksElements}
-      </List>
-      { isAddTaskFormActive && <form>
-          <input type="text" onChange={changeAddTaskText} value={addTaskText} />
-          <button type="button" onClick={handleAddTask}>Add</button>
-          <button onClick={closeAddTaskForm}>X</button>
-        </form> }
-      <button onClick={openAddTaskForm}>+</button>
-
-    </Dialog>
-  );
-}
-
 
 export default CalendarDay;

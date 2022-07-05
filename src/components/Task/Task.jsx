@@ -9,7 +9,7 @@ const Task = props => {
   const dispatch = useDispatch()
 
   const handleCloseTask = () => {
-    dispatch(closeTask(props.id))
+    dispatch(closeTask({id: props.id, dayDate: props.dayDate}))
   }
 
   return (
