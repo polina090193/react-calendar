@@ -1,12 +1,8 @@
 import React from 'react'
-import { useDispatch } from 'react-redux'
 import { useFormik } from "formik";
-
-import { addTask } from '@/redux/tasksSlice'
+import { tasksAPI } from "@/api"
 
 const AddTask = (props) => {
-  const dispatch = useDispatch()
-
   const validate = values => {
 
     const errors = {};
@@ -20,14 +16,16 @@ const AddTask = (props) => {
     return errors;
   };
 
+  const addTask = ({dayDate, taskTitle}) => {
+    tasksAPI.addTask(dayDate, taskTitle).then(() => props.setTasks(dayDate))
+  }
+
   const addTaskForm = useFormik({
     initialValues: {
       taskTitle: '',
     },
     validate,
-    onSubmit: values => {
-      dispatch(addTask({ dayDate: props.dayDate, ...values }))
-    }
+    onSubmit: values => addTask({ dayDate: props.dayDate, ...values })
   });
 
   return (
