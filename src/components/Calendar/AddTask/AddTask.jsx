@@ -10,7 +10,7 @@ const AddTask = (props) => {
     if (!values.taskTitle) {
       errors.taskTitle = 'Required';
     } else if (values.taskTitle.length > 120) {
-      errors.taskTitle = 'Must be 120 characters or less. Add description if you would like to add more.';
+      errors.taskTitle = 'Must be 120 characters or less'; // Add description if you would like to add more.
     }
 
     return errors;
@@ -25,7 +25,10 @@ const AddTask = (props) => {
       taskTitle: '',
     },
     validate,
-    onSubmit: values => addTask({ dayDate: props.dayDate, ...values })
+    onSubmit: (values, { resetForm }) => {
+      addTask({ dayDate: props.dayDate, ...values })
+      resetForm()
+    }
   });
 
   return (
@@ -38,7 +41,7 @@ const AddTask = (props) => {
         onBlur={addTaskForm.handleBlur}
         value={addTaskForm.values.taskTitle}
       />
-      {addTaskForm.touched.title && addTaskForm.errors.title ? <div>{addTaskForm.errors.title}</div> : null}
+      {addTaskForm.touched.taskTitle && addTaskForm.errors.taskTitle ? <div>{addTaskForm.errors.taskTitle}</div> : null}
 
       <button type="submit">Add</button>
       <button type="button" onClick={props.closeAddTaskForm}>X</button>

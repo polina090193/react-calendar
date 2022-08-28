@@ -1,7 +1,7 @@
 import './App.css';
 import Calendar from "./components/Calendar/Calendar"
 
-function App() {
+const App: React.FC = () => {
   return (
     <div className="app">
       <Calendar />

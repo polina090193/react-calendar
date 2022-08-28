@@ -1,0 +1,11 @@
+{
+    "extends": "./tsconfig.paths.json",
+    "compilerOptions": {
+        "esModuleInterop": true,
+        "moduleResolution": "node",
+        "jsx": "react-jsx",
+        "types": [
+            "node"
+        ]
+    },
+}
