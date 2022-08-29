@@ -26,10 +26,25 @@ const CalendarPaper = styled(Paper)`
   }
 `;
 
+type DayState = {
+  tasks: [],
+  loadingTasksStatus: boolean,
+}
+
+const initialDayState: DayState = {
+  tasks: [],
+  loadingTasksStatus: true,
+}
+
+enum DayActionKind {
+  SetTasks = 'SET_TASKS',
+}
+
 function calendarDayReducer(state, action) {
-  switch (action.type) {
-    case 'setTasks':
-      return action.data
+  const {type, data} = action;
+  switch (type) {
+    case DayActionKind.SetTasks:
+      return data
 
     default:
       return state
@@ -42,16 +57,11 @@ async function getTasks(dayDate) {
 }
 
 const CalendarDay = (props) => {
-  const initialState = {
-    tasks: [],
-    loadingTasksStatus: true,
-  };
-  
-  const [state, dispatch] = useReducer(calendarDayReducer, initialState);
+  const [state, dispatch] = useReducer(calendarDayReducer, initialDayState);
   
   async function setTasks(dayDate) {
     getTasks(dayDate).then(tasks => dispatch({
-        type: 'setTasks',
+        type: DayActionKind.SetTasks,
         data: { loadingTasksStatus: false, tasks: tasks }
       })
     )

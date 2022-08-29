@@ -8,7 +8,7 @@ const AddTask = (props) => {
   }
 
   const errors: FormikErrors<FormValues> = {};
-  const validate = (values/* : FormValues */) => {
+  const validate = (values: FormValues) => {
 
 
     if (!values.taskTitle) {

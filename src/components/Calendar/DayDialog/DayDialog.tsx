@@ -8,7 +8,7 @@ import AddTask from '../AddTask/AddTask';
 const DayDialog = (props) => {
 
   const { onClose, open } = props;
-  const [isAddTaskFormActive, setIsAddTaskFormActive] = React.useState(false);
+  const [isAddTaskFormActive, setIsAddTaskFormActive] = React.useState<boolean>(false);
   
   const handleClose = () => {
     onClose();
