@@ -1,11 +1,15 @@
 import React from 'react'
-import { useFormik } from "formik";
+import { useFormik, FormikErrors } from "formik";
 import { tasksAPI } from "@/api"
 
 const AddTask = (props) => {
-  const validate = values => {
+  interface FormValues {
+    taskTitle: string;
+  }
 
-    const errors = {};
+  const errors: FormikErrors<FormValues> = {};
+  const validate = (values/* : FormValues */) => {
+
 
     if (!values.taskTitle) {
       errors.taskTitle = 'Required';
@@ -20,7 +24,9 @@ const AddTask = (props) => {
     tasksAPI.addTask(dayDate, taskTitle).then(() => props.setTasks(dayDate))
   }
 
-  const addTaskForm = useFormik({
+  const { handleSubmit, handleChange, handleBlur, values, touched } = useFormik<{
+    taskTitle: string;
+  }>({
     initialValues: {
       taskTitle: '',
     },
@@ -32,16 +38,16 @@ const AddTask = (props) => {
   });
 
   return (
-    <form onSubmit={addTaskForm.handleSubmit}>
+    <form onSubmit={handleSubmit}>
       <input
         type="text"
         id="taskTitle"
         name="taskTitle"
-        onChange={addTaskForm.handleChange}
-        onBlur={addTaskForm.handleBlur}
-        value={addTaskForm.values.taskTitle}
+        onChange={handleChange}
+        onBlur={handleBlur}
+        value={values.taskTitle}
       />
-      {addTaskForm.touched.taskTitle && addTaskForm.errors.taskTitle ? <div>{addTaskForm.errors.taskTitle}</div> : null}
+      {touched.taskTitle && errors.taskTitle && <div>{errors.taskTitle}</div>}
 
       <button type="submit">Add</button>
       <button type="button" onClick={props.closeAddTaskForm}>X</button>
