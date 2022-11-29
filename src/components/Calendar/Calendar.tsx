@@ -1,16 +1,8 @@
 import CalendarDay from "./CalendarDay/CalendarDay"
-import { weekDays } from '@/consts/days'
+import { weekDays } from '@/consts/daysConsts'
 import CalendarCss from './Calendar.module.css'
-
-const days = [
-  '2022/07/03',
-  '2022/07/04',
-  '2022/07/05',
-  '2022/07/06',
-  '2022/07/07',
-  '2022/07/08',
-  '2022/07/09',
-]
+import days from "@/api/daysChoosing";
+import Grid from '@mui/material/Grid';
 
 const dates = weekDays.map((weekDay, index) => {
   return {weekDay, date: days[index]}
@@ -20,7 +12,13 @@ function Calendar() {
   return (
     <div className={CalendarCss.calendar}>
       <div className={CalendarCss.days}>
-        {dates.map(({weekDay, date}) => <CalendarDay key={date} weekDay={weekDay} dayDate={date} />)}
+
+      <Grid container rowSpacing={1} columnSpacing={1}>
+        {dates.map(({weekDay, date}) => (<Grid xs={1.7}>
+          <CalendarDay key={date} weekDay={weekDay} dayDate={date} />
+        </Grid>) )}
+      </Grid>
+
       </div>
     </div>
   );

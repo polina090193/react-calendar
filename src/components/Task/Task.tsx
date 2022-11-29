@@ -1,7 +1,7 @@
 import Checkbox from "@mui/material/Checkbox"
 import taskCss from './Task.module.css'
 import { Box } from "@mui/material";
-import { tasksAPI } from "@/api"
+import { tasksAPI } from "@/api/todoAPI"
 
 const Task = props => {
   const closeTask = () => {

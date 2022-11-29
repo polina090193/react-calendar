@@ -1,6 +1,6 @@
 import React from 'react'
 import { useFormik, FormikErrors } from "formik";
-import { tasksAPI } from "@/api"
+import { tasksAPI } from "@/api/todoAPI"
 
 const AddTask = (props) => {
   interface FormValues {
