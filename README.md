@@ -1,8 +1,17 @@
-React calendar
-<br>React app with sync with Todoist app https://developer.todoist.com/rest/v1/?javascript
-<br>In progress
-<p><strong>Stack:</strong>
-<ul>
-<li>React</li>
-<li>Elements of MUI</li>
-</ul>
+## React calendar
+React app using [Todoist API](https://developer.todoist.com/rest/v1/#javascript-sdk)
+In progress
+
+- [TypeScript](https://www.typescriptlang.org/)
+- [MUI](https://mui.com/)
+- [Todoist API](https://developer.todoist.com/rest/v1/#javascript-sdk)
+
+## Getting Started
+
+To get started, just clone the repository and run `npm install && npm run dev`:
+
+    git clone https://github.com/polina090193/react-calendar
+    npm install
+    npm run dev
+
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
