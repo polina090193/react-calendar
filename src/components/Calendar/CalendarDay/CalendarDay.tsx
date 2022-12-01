@@ -1,29 +1,30 @@
 import React, { useEffect, useReducer } from 'react'
 import { tasksAPI } from "@/api/todoAPI"
-import SizesConsts from "@/consts/sizes"
 import Paper from "@mui/material/Paper"
 import Typography from "@mui/material/Typography"
 import { styled } from '@mui/material/styles';
 import yellow from "@mui/material/colors/yellow"
+import CalendarDayCss from './CalendarDay.module.css'
 
-import Task from "@/components/Task/Task";
+import TasksList from "@/components/Calendar/CalendarDay/TasksList/TasksList";
 import DayDialog from '../DayDialog/DayDialog'
 
-const noteSizes = {
-  width: '10%',
-  height: '20%',
+const paperSizes = {
+  height: '15vh',
+  titlePadding: '5px 10px',
 }
 
-const CalendarPaper = styled(Paper)`
-  background-color: ${yellow[200]};
-  color: #20b2aa;
-  height: ${noteSizes.height};
-  padding: ${SizesConsts.defaultPadding};
+const CalendarPaper = styled(Paper)(() => ({
+  backgroundColor: yellow[100],
+  color: '#20b2aa',
+  height: paperSizes.height,
+  border: `1px ${yellow[200]} solid`,
 
-  :hover {
-    color: #2e8b57;
+  ':hover': {
+    backgroundColor: yellow[200],
+    color: '#2e8b57',
   }
-`;
+}))
 
 type DayState = {
   tasks: [],
@@ -70,16 +71,6 @@ const CalendarDay = (props) => {
     setTasks(props.dayDate)
   }, [props.dayDate]);
 
-  const tasksElements = state.tasks?.map(task => (
-    <Task 
-      key={task.id}
-      id={task.id}
-      dayDate={props.dayDate}
-      content={task.content}
-      setTasks={setTasks}
-    />
-  ))
-
   const [openDay, setOpenDay] = React.useState(false);
 
   const handleClickOpenDay = () => {
@@ -92,14 +83,15 @@ const CalendarDay = (props) => {
 
   return (
     <CalendarPaper>
-      <Typography variant="h5" sx={{ cursor: 'pointer' }} onClick={handleClickOpenDay}>{props.weekDay}</Typography>
-      <ul>{tasksElements}</ul>
+      <Typography variant="h6" sx={{ cursor: 'pointer', padding: paperSizes.titlePadding }} onClick={handleClickOpenDay}>{props.weekDay}</Typography>
+      <TasksList className={CalendarDayCss.tasksList} tasks={state.tasks} setTasks={setTasks} />
       <DayDialog
         open={openDay}
         onClose={handleCloseDay}
-        tasksElements={tasksElements}
+        tasks={state.tasks}
         dayDate={props.dayDate}
         setTasks={setTasks}
+        isDialog
       />
     </CalendarPaper>
   );

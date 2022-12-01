@@ -1,15 +1,37 @@
 import React from 'react'
+import Dialog from '@mui/material/Dialog'
+import DialogTitle from '@mui/material/DialogTitle'
+import TasksList from '../CalendarDay/TasksList/TasksList'
+import Button from '@mui/material/Button'
+import AddTask from './AddTask/AddTask'
+import { styled } from '@mui/material/styles'
+import yellow from "@mui/material/colors/yellow"
 
-import DialogTitle from '@mui/material/DialogTitle';
-import Dialog from '@mui/material/Dialog';
-import List from '@mui/material/List';
-import AddTask from '../AddTask/AddTask';
+const DayModal = styled(Dialog)(() => ({
+  '& .MuiDialog-paper': {
+    width: '20vw',
+    height: '80vh',
+    backgroundColor: yellow[100],
+    padding: 10,
+  },
+  color: '#20b2aa',
+  border: `1px ${yellow[200]} solid`,
+}))
+
+const OpenAddTaskInputButton = styled(Button)(() => ({
+  backgroundColor: yellow[200],
+  color: '#20b2aa',
+
+  ':hover': {
+    backgroundColor: yellow[300],
+  },
+}))
 
 const DayDialog = (props) => {
 
-  const { onClose, open } = props;
+  const { onClose, open, tasks, setTasks, dayDate } = props;
   const [isAddTaskFormActive, setIsAddTaskFormActive] = React.useState<boolean>(false);
-  
+
   const handleClose = () => {
     onClose();
   };
@@ -21,17 +43,18 @@ const DayDialog = (props) => {
   const closeAddTaskForm = () => {
     setIsAddTaskFormActive(false);
   };
-  
-  return (
-    <Dialog onClose={handleClose} open={open}>
-      <DialogTitle>{props.dayDate}</DialogTitle>
-      <List sx={{ pt: 0 }}>
-        {props.tasksElements}
-      </List>
-      { isAddTaskFormActive && <AddTask dayDate={props.dayDate} closeAddTaskForm={closeAddTaskForm} setTasks={props.setTasks} /> }
-      <button onClick={openAddTaskForm}>+</button>
 
-    </Dialog>
+  return (
+    <DayModal onClose={handleClose} open={open}>
+      <DialogTitle>{dayDate}</DialogTitle>
+
+      <TasksList tasks={tasks} setTasks={setTasks} isDialog />
+
+      {isAddTaskFormActive ?
+        <AddTask dayDate={dayDate} closeAddTaskForm={closeAddTaskForm} setTasks={setTasks} />
+        : <OpenAddTaskInputButton onClick={openAddTaskForm}>+</OpenAddTaskInputButton>}
+
+    </DayModal>
   );
 }
 

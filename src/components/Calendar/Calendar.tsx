@@ -14,8 +14,8 @@ function Calendar() {
       <div className={CalendarCss.days}>
 
       <Grid container rowSpacing={1} columnSpacing={1}>
-        {dates.map(({weekDay, date}) => (<Grid xs={1.7}>
-          <CalendarDay key={date} weekDay={weekDay} dayDate={date} />
+        {dates.map(({weekDay, date}) => (<Grid item xs={1.7} key={date}>
+          <CalendarDay weekDay={weekDay} dayDate={date} />
         </Grid>) )}
       </Grid>
 

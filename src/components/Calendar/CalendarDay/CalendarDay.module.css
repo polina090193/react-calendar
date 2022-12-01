@@ -1,15 +1,5 @@
-.calendar {
-  display: flex;
-  flex-direction: column;
-  margin: auto;
-  width: 90%;
-  height: 100vh;
-}
-
-.days {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  height: 100%;
+.tasksList {
+  height: 68%;
+  overflow: auto;
+  padding-right: 10px;
 }

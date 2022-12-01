@@ -1,6 +1,33 @@
 import React from 'react'
 import { useFormik, FormikErrors } from "formik";
 import { tasksAPI } from "@/api/todoAPI"
+import { styled } from '@mui/material/styles'
+import yellow from "@mui/material/colors/yellow"
+
+import Button from '@mui/material/Button'
+import Input from '@mui/material/Input'
+
+const AddTaskInput = styled(Input)(() => ({
+  width: '100%',
+}))
+
+const AddTaskFormButton = styled(Button)(() => ({
+  width: '50%',
+  marginTop: 10,
+  color: '#20b2aa',
+
+  ':hover': {
+    backgroundColor: yellow[300],
+  },
+}))
+
+const SubmitTaskButton = styled(AddTaskFormButton)(() => ({
+  
+}))
+
+const CancelTaskButton = styled(AddTaskFormButton)(() => ({
+
+}))
 
 const AddTask = (props) => {
   interface FormValues {
@@ -39,7 +66,7 @@ const AddTask = (props) => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <input
+      <AddTaskInput
         type="text"
         id="taskTitle"
         name="taskTitle"
@@ -49,8 +76,8 @@ const AddTask = (props) => {
       />
       {touched.taskTitle && errors.taskTitle && <div>{errors.taskTitle}</div>}
 
-      <button type="submit">Add</button>
-      <button type="button" onClick={props.closeAddTaskForm}>X</button>
+      <SubmitTaskButton type="submit">Add</SubmitTaskButton>
+      <CancelTaskButton onClick={props.closeAddTaskForm}>X</CancelTaskButton>
     </form>
   );
 }
