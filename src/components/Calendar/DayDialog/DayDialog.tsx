@@ -48,7 +48,7 @@ const DayDialog = (props) => {
     <DayModal onClose={handleClose} open={open}>
       <DialogTitle>{dayDate}</DialogTitle>
 
-      <TasksList tasks={tasks} setTasks={setTasks} isDialog />
+      <TasksList tasks={tasks} setTasks={setTasks} isDialog dayDate={dayDate} />
 
       {isAddTaskFormActive ?
         <AddTask dayDate={dayDate} closeAddTaskForm={closeAddTaskForm} setTasks={setTasks} />

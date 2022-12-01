@@ -57,6 +57,7 @@ async function getTasks(dayDate) {
 }
 
 const CalendarDay = (props) => {
+  const { dayDate, weekDay } = props
   const [state, dispatch] = useReducer(calendarDayReducer, initialDayState);
   
   async function setTasks(dayDate) {
@@ -68,8 +69,8 @@ const CalendarDay = (props) => {
   }
 
   useEffect(() => {
-    setTasks(props.dayDate)
-  }, [props.dayDate]);
+    setTasks(dayDate)
+  }, [dayDate]);
 
   const [openDay, setOpenDay] = React.useState(false);
 
@@ -83,13 +84,13 @@ const CalendarDay = (props) => {
 
   return (
     <CalendarPaper>
-      <Typography variant="h6" sx={{ cursor: 'pointer', padding: paperSizes.titlePadding }} onClick={handleClickOpenDay}>{props.weekDay}</Typography>
-      <TasksList className={CalendarDayCss.tasksList} tasks={state.tasks} setTasks={setTasks} />
+      <Typography variant="h6" sx={{ cursor: 'pointer', padding: paperSizes.titlePadding }} onClick={handleClickOpenDay}>{weekDay}</Typography>
+      <TasksList className={CalendarDayCss.tasksList} tasks={state.tasks} setTasks={setTasks} dayDate={dayDate} />
       <DayDialog
         open={openDay}
         onClose={handleCloseDay}
         tasks={state.tasks}
-        dayDate={props.dayDate}
+        dayDate={dayDate}
         setTasks={setTasks}
         isDialog
       />
