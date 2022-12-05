@@ -6,6 +6,7 @@ import ListItemIcon from "@mui/material/ListItemIcon"
 import ListItemText from "@mui/material/ListItemText"
 import { styled } from '@mui/material/styles';
 import { CircularProgress } from '@mui/material'
+import { colors } from '@/consts/css'
 
 const TaskListItemIcon = styled(ListItemIcon)(() => ({
   minWidth: 'unset',
@@ -28,13 +29,13 @@ const Task = props => {
   }
 
   return (
-    <ListItemButton component="a" href="#simple-list" disableGutters sx={{ padding: '1px' }}>
+    <ListItemButton component="a" disableGutters sx={{ padding: '1px', color: colors.mainTextColor }}>
       <TaskListItemIcon>
-        { taskIsClosing ? <ClosingTaskProgress size={20} /> : <Checkbox onChange={closeTask} /> }
+        {taskIsClosing ? <ClosingTaskProgress size={20} /> : <Checkbox onChange={closeTask} />}
       </TaskListItemIcon>
       <ListItemText primary={content} primaryTypographyProps={{ fontSize: isDialog ? '1 rem' : '0.8rem' }} />
     </ListItemButton>
   );
 }
 
-export default Task;
+export default Task

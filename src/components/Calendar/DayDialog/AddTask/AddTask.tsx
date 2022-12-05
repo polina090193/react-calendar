@@ -2,9 +2,9 @@ import React, { useRef } from 'react'
 import { useFormik, FormikErrors } from "formik";
 import { tasksAPI } from "@/api/todoAPI"
 import { styled } from '@mui/material/styles'
-import yellow from "@mui/material/colors/yellow"
 import { CircularProgress } from '@mui/material'
 import AddTaskCSS from './AddTask.module.css'
+import { colors } from '@/consts/css'
 
 import Button from '@mui/material/Button'
 import Input from '@mui/material/Input'
@@ -14,14 +14,14 @@ const AddTaskInput = styled(Input)(() => ({
 }))
 
 const AddTaskFormButton = styled(Button)(() => ({
-  backgroundColor: yellow[200],
+  backgroundColor: colors.middleYellow,
   width: '50%',
   height: 40,
   marginTop: 10,
-  color: '#20b2aa',
+  color: colors.mainTextColor,
 
   ':hover': {
-    backgroundColor: yellow[300],
+    backgroundColor: colors.strongYellow,
   },
 }))
 

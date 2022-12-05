@@ -3,8 +3,8 @@ import { tasksAPI } from "@/api/todoAPI"
 import Paper from "@mui/material/Paper"
 import Typography from "@mui/material/Typography"
 import { styled } from '@mui/material/styles'
-import yellow from "@mui/material/colors/yellow"
 import CalendarDayCss from './CalendarDay.module.css'
+import { colors } from '@/consts/css'
 
 import TasksList from "@/components/Calendar/CalendarDay/TasksList/TasksList"
 import DayDialog from '../DayDialog/DayDialog'
@@ -17,14 +17,13 @@ const paperSizes = {
 const CalendarPaper = styled(Paper)(() => ({
   display: 'flex',
   flexDirection: 'column',
-  backgroundColor: yellow[100],
-  color: '#20b2aa',
+  backgroundColor: colors.backgroundYellow,
+  color: colors.mainTextColor,
   height: paperSizes.height,
-  border: `1px ${yellow[200]} solid`,
+  border: `1px ${colors.middleYellow} solid`,
 
   ':hover': {
-    backgroundColor: yellow[200],
-    color: '#2e8b57',
+    backgroundColor: colors.middleYellow,
   }
 }))
 
@@ -57,11 +56,15 @@ async function getTasks(dayDate) {
 }
 
 const CalendarDay = (props) => {
-  const { dayDate, weekDay } = props
+  const { dayDate } = props
   const [state, dispatch] = useReducer(calendarDayReducer, initialDayState)
   const [isLoading, setIsLoading] = React.useState(true)
 
   const setTasks = async (dayDate) => {
+    if (!dayDate) {
+      setIsLoading(false)
+      return
+    }
     const tasks = await getTasks(dayDate)
     await dispatch({
       type: DayActionKind.SetTasks,
@@ -86,7 +89,14 @@ const CalendarDay = (props) => {
 
   return (
     <CalendarPaper>
-      <Typography variant="h6" sx={{ cursor: 'pointer', padding: paperSizes.titlePadding }} onClick={handleClickOpenDay}>{weekDay}</Typography>
+      <Typography
+        variant="h6"
+        sx={{
+          cursor: 'pointer',
+          padding: paperSizes.titlePadding
+        }}
+        onClick={handleClickOpenDay}>{dayDate}
+      </Typography>
 
       <TasksList
         className={CalendarDayCss.tasksList}

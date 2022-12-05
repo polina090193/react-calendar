@@ -5,25 +5,25 @@ import TasksList from '../CalendarDay/TasksList/TasksList'
 import Button from '@mui/material/Button'
 import AddTask from './AddTask/AddTask'
 import { styled } from '@mui/material/styles'
-import yellow from "@mui/material/colors/yellow"
+import { colors } from '@/consts/css'
 
 const DayModal = styled(Dialog)(() => ({
   '& .MuiDialog-paper': {
     width: '20vw',
-    height: '80vh',
-    backgroundColor: yellow[100],
+    maxHeight: '80vh',
+    backgroundColor: colors.backgroundYellow,
     padding: 10,
   },
-  color: '#20b2aa',
-  border: `1px ${yellow[200]} solid`,
+  color: colors.mainTextColor,
+  border: `1px ${colors.middleYellow} solid`,
 }))
 
 const OpenAddTaskInputButton = styled(Button)(() => ({
-  backgroundColor: yellow[200],
-  color: '#20b2aa',
+  backgroundColor: colors.middleYellow,
+  color: colors.mainTextColor,
 
   ':hover': {
-    backgroundColor: yellow[300],
+    backgroundColor: colors.strongYellow,
   },
 }))
 
@@ -46,7 +46,7 @@ const DayDialog = (props) => {
 
   return (
     <DayModal onClose={handleClose} open={open}>
-      <DialogTitle>{dayDate}</DialogTitle>
+      <DialogTitle sx={{ color: colors.mainTextColor }}>{dayDate}</DialogTitle>
 
       <TasksList
         tasks={tasks}

@@ -1,9 +1,8 @@
 .calendar {
   display: flex;
   flex-direction: column;
-  margin: auto;
+  margin: 20px auto;
   width: 94%;
-  height: 100vh;
 }
 
 .days {

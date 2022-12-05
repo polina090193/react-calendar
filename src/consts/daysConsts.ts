@@ -23,13 +23,15 @@ export const months: month[] = [
 ];
 
 export const weekDays: string[] = [
-  'Sun',
   'Mon',
   'Tue',
   'Wed',
   'Thu',
   'Fri',
   'Sat',
-];
+  'Sun',
+]
 
-export default { months, weekDays }
+export const calendarLength: number = 42
+
+export default { months, weekDays, calendarLength }
