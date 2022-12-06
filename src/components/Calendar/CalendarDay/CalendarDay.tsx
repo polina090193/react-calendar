@@ -1,13 +1,17 @@
-import React, { useEffect, useReducer } from 'react'
+import React, { useEffect } from 'react'
 import { tasksAPI } from "@/api/todoAPI"
+import { Task } from '@doist/todoist-api-typescript/dist/types/entities'
+
+import { styled } from '@mui/material/styles'
 import Paper from "@mui/material/Paper"
 import Typography from "@mui/material/Typography"
-import { styled } from '@mui/material/styles'
 import CalendarDayCss from './CalendarDay.module.css'
 import { colors } from '@/consts/css'
 
 import TasksList from "@/components/Calendar/CalendarDay/TasksList/TasksList"
 import DayDialog from '../DayDialog/DayDialog'
+
+import { makeDateTitle } from '@/helpers/dateHelpers'
 
 const paperSizes = {
   height: 200,
@@ -27,55 +31,27 @@ const CalendarPaper = styled(Paper)(() => ({
   }
 }))
 
-type DayState = {
-  tasks: [],
-}
-
-const initialDayState: DayState = {
-  tasks: [],
-}
-
-enum DayActionKind {
-  SetTasks = 'SET_TASKS',
-}
-
-function calendarDayReducer(state, action) {
-  const { type, data } = action;
-  switch (type) {
-    case DayActionKind.SetTasks:
-      return data
-
-    default:
-      return state
-  }
-}
-
 async function getTasks(dayDate) {
   const tasks = await tasksAPI.getTasks(dayDate)
   return tasks
 }
 
 const CalendarDay = (props) => {
-  const { dayDate } = props
-  const [state, dispatch] = useReducer(calendarDayReducer, initialDayState)
-  const [isLoading, setIsLoading] = React.useState(true)
+  const { dayDate, dayTasks } = props
 
-  const setTasks = async (dayDate) => {
-    if (!dayDate) {
-      setIsLoading(false)
-      return
-    }
+  const [tasks, setTasks] = React.useState<Array<Task>>()
+  
+  const updateTasks = async (dayDate) => {
+    if (!dayDate) return
     const tasks = await getTasks(dayDate)
-    await dispatch({
-      type: DayActionKind.SetTasks,
-      data: { tasks }
-    })
-    setIsLoading(false)
+    setTasks(tasks)
   }
 
+  const dayTitle = makeDateTitle(dayDate)
+
   useEffect(() => {
-    setTasks(dayDate)
-  }, [dayDate]);
+    setTasks(dayTasks)
+  }, [dayTasks]);
 
   const [openDay, setOpenDay] = React.useState(false)
 
@@ -95,25 +71,23 @@ const CalendarDay = (props) => {
           cursor: 'pointer',
           padding: paperSizes.titlePadding
         }}
-        onClick={handleClickOpenDay}>{dayDate}
+        onClick={handleClickOpenDay}>{dayTitle}
       </Typography>
 
       <TasksList
         className={CalendarDayCss.tasksList}
-        tasks={state.tasks}
-        setTasks={setTasks}
+        tasks={tasks}
+        updateTasks={updateTasks}
         dayDate={dayDate}
-        isLoading={isLoading}
       />
 
       <DayDialog
         open={openDay}
         onClose={handleCloseDay}
-        tasks={state.tasks}
+        tasks={tasks}
+        dayTitle={dayTitle}
         dayDate={dayDate}
-        setTasks={setTasks}
-        setIsLoading={setIsLoading}
-        isLoading={isLoading}
+        updateTasks={updateTasks}
         isDialog
       />
     </CalendarPaper>

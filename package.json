@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@doist/todoist-api-typescript": "^1.5.0",
+    "@doist/todoist-api-typescript": "^2.1.2",
     "@emotion/react": "^11.8.2",
     "@emotion/styled": "^11.8.1",
     "@mui/material": "^5.10.2",

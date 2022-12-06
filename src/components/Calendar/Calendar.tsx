@@ -1,22 +1,69 @@
-import CalendarDay from "./CalendarDay/CalendarDay"
-import { weekDays/* , calendarLength */ } from '@/consts/daysConsts'
-import CalendarCSS from './Calendar.module.css'
-import days from "@/api/daysChoosing"
+import { useEffect, useReducer, useState } from "react"
+import { tasksAPI } from "@/api/todoAPI"
+import { Task } from '@doist/todoist-api-typescript/dist/types/entities'
+import { weekDays } from '@/consts/daysConsts'
+import daysInfo from "@/api/daysChoosing"
+
 import Grid from '@mui/material/Grid'
+import CalendarDay from "./CalendarDay/CalendarDay"
 import Typography from "@mui/material/Typography"
+import CircularProgress from '@mui/material/CircularProgress'
+
+import { styled } from '@mui/material/styles'
+import CalendarCSS from './Calendar.module.css'
 import { colors } from "@/consts/css"
 
-// const { /* firstDayOfMonthWeekday,  */days/* , numDaysInMonth */ } = daysInfo
+const { days, monthFilter } = daysInfo
 
-/* const addEmptyDays = (num) => {
-  return [...Array(num)].map((num, i) => (
-    <Grid item xs={1.7} key={i}>
-      <CalendarDay />
-    </Grid>
-  ))
-} */
+type DayState = {
+  tasks: Task[],
+}
+
+const initialDayState: DayState = {
+  tasks: [],
+}
+
+enum DayActionKind {
+  SetTasks = 'SET_TASKS',
+}
+
+async function getTasks(filter) {
+  const tasks = await tasksAPI.getTasks(filter)
+  return tasks
+}
+
+function calendarDayReducer(state, action) {
+  const { type, data } = action;
+  switch (type) {
+    case DayActionKind.SetTasks:
+      return data
+
+    default:
+      return state
+  }
+}
+
+const TaskListProgress = styled(CircularProgress)(() => ({
+  margin: '40px auto',
+}))
 
 const Calendar = () => {
+  const [state, dispatch] = useReducer(calendarDayReducer, initialDayState)
+  const [isLoading, setIsLoading] = useState(true)
+
+  const setTasks = async (filter = null) => {
+    const tasks = await getTasks(filter)
+    await dispatch({
+      type: DayActionKind.SetTasks,
+      data: { tasks }
+    })
+    setIsLoading(false)
+  }
+
+  useEffect(() => {
+    setTasks(monthFilter)
+  }, [])
+
   return (
     <div className={CalendarCSS.calendar}>
       <div className={CalendarCSS.days}>
@@ -32,13 +79,17 @@ const Calendar = () => {
             </Typography>
           </Grid>))}
 
-          {/* {addEmptyDays(emptyDaysBeginning)} */}
+          { isLoading ? <TaskListProgress /> : 
 
-          {days.map((date) => (<Grid item xs={1.7} key={date}>
-            <CalendarDay dayDate={date} />
-          </Grid>))}
+          days.map((date: string) => {
+            const dayTasks = state.tasks.filter(task => task.due.date === date)
 
-          {/* {addEmptyDays(emptyDaysEnd)} */}
+            return (<Grid item xs={1.7} key={date}>
+              <CalendarDay dayDate={date} dayTasks={dayTasks} />
+            </Grid>)
+          })
+        }
+
         </Grid>
 
       </div>

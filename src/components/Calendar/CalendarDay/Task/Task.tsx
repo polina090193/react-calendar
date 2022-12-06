@@ -1,11 +1,13 @@
 import React from 'react'
-import Checkbox from "@mui/material/Checkbox"
 import { tasksAPI } from "@/api/todoAPI"
+
+import Checkbox from "@mui/material/Checkbox"
 import ListItemButton from "@mui/material/ListItemButton"
 import ListItemIcon from "@mui/material/ListItemIcon"
 import ListItemText from "@mui/material/ListItemText"
+import CircularProgress from '@mui/material/CircularProgress'
+
 import { styled } from '@mui/material/styles';
-import { CircularProgress } from '@mui/material'
 import { colors } from '@/consts/css'
 
 const TaskListItemIcon = styled(ListItemIcon)(() => ({
@@ -18,13 +20,13 @@ const ClosingTaskProgress = styled(CircularProgress)(() => ({
 }))
 
 const Task = props => {
-  const { id, dayDate, content, isDialog, setTasks } = props
+  const { id, dayDate, content, isDialog, updateTasks } = props
   const [taskIsClosing, setTaskIsClosing] = React.useState<boolean>(false);
 
   const closeTask = async () => {
     setTaskIsClosing(true)
     await tasksAPI.closeTask(id)
-    await setTasks(dayDate)
+    await updateTasks(dayDate)
     setTaskIsClosing(false)
   }
 

@@ -1,9 +1,11 @@
 import React from 'react'
+
 import Dialog from '@mui/material/Dialog'
 import DialogTitle from '@mui/material/DialogTitle'
 import TasksList from '../CalendarDay/TasksList/TasksList'
 import Button from '@mui/material/Button'
 import AddTask from './AddTask/AddTask'
+
 import { styled } from '@mui/material/styles'
 import { colors } from '@/consts/css'
 
@@ -29,7 +31,7 @@ const OpenAddTaskInputButton = styled(Button)(() => ({
 
 const DayDialog = (props) => {
 
-  const { onClose, open, tasks, setTasks, dayDate, isLoading } = props;
+  const { onClose, open, tasks, updateTasks, dayDate, dayTitle } = props;
   const [isAddTaskFormActive, setIsAddTaskFormActive] = React.useState<boolean>(false);
 
   const handleClose = () => {
@@ -46,18 +48,17 @@ const DayDialog = (props) => {
 
   return (
     <DayModal onClose={handleClose} open={open}>
-      <DialogTitle sx={{ color: colors.mainTextColor }}>{dayDate}</DialogTitle>
+      <DialogTitle sx={{ color: colors.mainTextColor }}>{dayTitle}</DialogTitle>
 
       <TasksList
         tasks={tasks}
-        setTasks={setTasks}
+        updateTasks={updateTasks}
         isDialog
         dayDate={dayDate}
-        isLoading={isLoading}
       />
 
       {isAddTaskFormActive ?
-        <AddTask dayDate={dayDate} closeAddTaskForm={closeAddTaskForm} setTasks={setTasks} />
+        <AddTask dayDate={dayDate} closeAddTaskForm={closeAddTaskForm} updateTasks={updateTasks} />
         : <OpenAddTaskInputButton onClick={openAddTaskForm}>+</OpenAddTaskInputButton>}
 
     </DayModal>

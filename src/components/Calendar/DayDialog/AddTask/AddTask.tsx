@@ -1,13 +1,15 @@
 import React, { useRef } from 'react'
 import { useFormik, FormikErrors } from "formik";
 import { tasksAPI } from "@/api/todoAPI"
-import { styled } from '@mui/material/styles'
-import { CircularProgress } from '@mui/material'
-import AddTaskCSS from './AddTask.module.css'
-import { colors } from '@/consts/css'
 
 import Button from '@mui/material/Button'
 import Input from '@mui/material/Input'
+import CircularProgress from '@mui/material/CircularProgress'
+
+import { styled } from '@mui/material/styles'
+import AddTaskCSS from './AddTask.module.css'
+import { colors } from '@/consts/css'
+
 
 const AddTaskInput = styled(Input)(() => ({
   width: '100%',
@@ -35,7 +37,7 @@ const CancelTaskButton = styled(AddTaskFormButton)(() => ({
 }))
 
 const AddTask = (props) => {
-  const { setTasks, dayDate, closeAddTaskForm } = props
+  const { updateTasks, dayDate, closeAddTaskForm } = props
 
   const [taskIsAdding, setTaskIsAdding] = React.useState<boolean>(false);
 
@@ -61,7 +63,7 @@ const AddTask = (props) => {
   const addTask = async ({taskTitle}) => {
     setTaskIsAdding(true)
     await tasksAPI.addTask(dayDate, taskTitle)
-    await setTasks(dayDate)
+    await updateTasks(dayDate)
     setTaskIsAdding(false)
 
     if (titleInputRef.current) {

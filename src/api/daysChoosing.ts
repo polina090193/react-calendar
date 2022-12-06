@@ -1,67 +1,82 @@
 import { range } from '@/helpers/mathHelpers'
-import { months } from '@/consts/daysConsts'
 import { weekDays, calendarLength } from '@/consts/daysConsts'
+import { getFirstDayOfMonth, getDates, getNumDaysInMonth } from '@/helpers/dateHelpers'
 
-const getFirstDayOfMonth = (year, month) =>  new Date(year, month, 1)
-
-const getDayNames = (nums, month) => nums.map(dayNum => `${months[month].name} ${dayNum}`)
- 
-const today = new Date()
-
-// const currentDate = ... // make objects for curr, prev, next, and reduce variable names
-
-const currentMonth: number = today.getMonth()
-const currentMonthName: string = months[currentMonth].name
-const currentYear: number = today.getFullYear()
-const numDaysInCurrentMonth: number = months[currentMonth].daysNum
-
-const firstDayOfMonthWeekday = getFirstDayOfMonth(currentYear, currentMonth).getDay()
-
-const isCurrentMonthJan: boolean = currentMonth - 1 < 0
-const isCurrentMonthDec: boolean = currentMonth === 11
-
-const prevMonth: number = isCurrentMonthJan ? 11 : currentMonth - 1
-const prevMonthName: string = months[prevMonth].name
-const prevYear: number = isCurrentMonthJan ? currentYear - 1 : currentYear
-const numDaysInPrevMonth: number = months[prevMonth].daysNum
-const numDaysForAddingFromPrevMonth: number = weekDays.length - firstDayOfMonthWeekday
-
-const getNumDaysForAddingFromNextMonth = (): number => {
-  const daysAfterMonth: number = calendarLength - numDaysForAddingFromPrevMonth - numDaysInCurrentMonth
-  // const daysAfterMonth: number = 42 - 3 - 31
-  const nextDays: number = daysAfterMonth >= weekDays.length ? daysAfterMonth - weekDays.length : daysAfterMonth
-  return nextDays
+interface DateData {
+  monthIndex: number,
+  year: number,
+  daysInMonthAmount: () => number,
+  firstDayOfMonthWeekday?: () => number,
+  isJan?: () => boolean,
+  isDec?: () => boolean,
+  daysForAddingAmount?: () => number,
+  daysNumsForAdding?: () => number[],
+  datesForAdding?: () => Date[],
 }
 
-const nextMonth: number = isCurrentMonthDec ? 0 : currentMonth + 1
-const nextMonthName: string = months[nextMonth].name
-const nextYear: number = isCurrentMonthDec ? currentYear + 1 : currentYear
-const numDaysInNextMonth: number = months[nextMonth].daysNum
-const numDaysForAddingFromNextMonth: number = getNumDaysForAddingFromNextMonth()
+const getDaysInfo = (currentDate = new Date()) => {
 
-// Make 1 function from next two?
-const prevMonthDaysNums = (): number[] => {
-  
-  const prevMonthDays = range(1, numDaysInPrevMonth)
-  return prevMonthDays.slice(-numDaysForAddingFromPrevMonth)
+  const currentData: DateData = {
+    monthIndex: currentDate.getMonth(),
+    year: currentDate.getFullYear(),
+    daysInMonthAmount() {return getNumDaysInMonth(this.monthIndex)},
+    firstDayOfMonthWeekday() {return getFirstDayOfMonth(this.year, this.monthIndex).getDay()},
+    isJan() {return this.monthIndex - 1 < 0},
+    isDec() {return this.monthIndex === 11},
+    datesForAdding() {return getDates(range(1, this.daysInMonthAmount), this.monthIndex, this.year)}
+  }
+
+  const prevData: DateData = {
+    monthIndex: currentData.isJan ? 11 : currentData.monthIndex - 1,
+    year: currentData.isJan ? currentData.year - 1 : currentData.year,
+    daysInMonthAmount() {return getNumDaysInMonth(this.monthIndex)},
+    daysForAddingAmount() {return weekDays.length - currentData.firstDayOfMonthWeekday()},
+
+    daysNumsForAdding() {
+      const allDaysNums: number[] = range(1, this.daysInMonthAmount)
+      return allDaysNums.slice(-this.daysForAddingAmount - 1)
+    },
+
+    datesForAdding() {
+      const dates = getDates(this.daysNumsForAdding(), this.monthIndex, this.year)
+      return dates
+    }
+  }
+
+  const nextData: DateData = {
+    monthIndex: currentData.isDec ? 0 : currentData.monthIndex + 1,
+    year: currentData.isDec ? currentData.year + 1 : currentData.year,
+    daysInMonthAmount() {return getNumDaysInMonth(this.monthIndex)},
+
+    daysForAddingAmount() {
+      const daysAfterMonth: number = calendarLength - prevData.daysForAddingAmount() - prevData.daysInMonthAmount()
+      const nextDays: number = daysAfterMonth >= weekDays.length ? daysAfterMonth - weekDays.length : daysAfterMonth
+      return nextDays
+    },
+
+    daysNumsForAdding() {
+      const allDaysNums: number[] = range(1, this.daysInMonthAmount)
+      return allDaysNums.slice(0, this.daysForAddingAmount + 1)
+    },
+
+    datesForAdding() {
+      const dates = getDates(this.daysNumsForAdding(), this.monthIndex, this.year)
+      return dates
+    }
+  }
+
+  return {
+    days: [
+      ...prevData.datesForAdding().slice(1),
+      ...currentData.datesForAdding(),
+      ...nextData.datesForAdding().slice(-2, 1),
+    ],
+    monthFilter:`
+      due after: ${prevData.datesForAdding()[0]} | due before: ${nextData.datesForAdding()[nextData.daysNumsForAdding().length - 1]}
+    `,
+  }
 }
 
-const nextMonthDaysNums = (): number[] => {
-  const nextMonthDays = range(1, numDaysInNextMonth)
-  return nextMonthDays.slice(0, numDaysForAddingFromNextMonth)
-}
+const daysInfo = getDaysInfo(/* date */) // date - for the future, to add an option for month changing (today or first day of next/prev month)
 
-
-const getDaysNamesList = (): string[] => {
-  // All above should be in this function when we will be able to change month
-  const prevMonthDaysNames = getDayNames(prevMonthDaysNums(), prevMonth)
-  const currMonthDaysNames = getDayNames(range(1, numDaysInCurrentMonth), currentMonth)
-  const nextMonthDaysNames = getDayNames(nextMonthDaysNums(), nextMonth)
-  
-
-  return [...prevMonthDaysNames, ...currMonthDaysNames, ...nextMonthDaysNames]
-}
-
-const days = getDaysNamesList(/* date */) // date - for the future, to add an option for month changing (today or first day of next/prev month)
-
-export default days
+export default daysInfo
