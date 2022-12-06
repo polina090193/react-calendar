@@ -11,10 +11,15 @@ interface DateData {
   isDec?: () => boolean,
   daysForAddingAmount?: () => number,
   daysNumsForAdding?: () => number[],
-  datesForAdding?: () => Date[],
+  datesForAdding?: () => string[],
 }
 
-const getDaysInfo = (currentDate = new Date()) => {
+interface DaysInfo {
+  days: string[],
+  monthFilter: string,
+}
+
+const getDaysInfo = (currentDate = new Date()): DaysInfo => {
 
   const currentData: DateData = {
     monthIndex: currentDate.getMonth(),
@@ -23,7 +28,7 @@ const getDaysInfo = (currentDate = new Date()) => {
     firstDayOfMonthWeekday() {return getFirstDayOfMonth(this.year, this.monthIndex).getDay()},
     isJan() {return this.monthIndex - 1 < 0},
     isDec() {return this.monthIndex === 11},
-    datesForAdding() {return getDates(range(1, this.daysInMonthAmount), this.monthIndex, this.year)}
+    datesForAdding() {return getDates(range(1, this.daysInMonthAmount()), this.monthIndex, this.year)}
   }
 
   const prevData: DateData = {
@@ -33,14 +38,11 @@ const getDaysInfo = (currentDate = new Date()) => {
     daysForAddingAmount() {return weekDays.length - currentData.firstDayOfMonthWeekday()},
 
     daysNumsForAdding() {
-      const allDaysNums: number[] = range(1, this.daysInMonthAmount)
-      return allDaysNums.slice(-this.daysForAddingAmount - 1)
+      const allDaysNums: number[] = range(1, this.daysInMonthAmount())
+      return allDaysNums.slice(-this.daysForAddingAmount() - 1)
     },
 
-    datesForAdding() {
-      const dates = getDates(this.daysNumsForAdding(), this.monthIndex, this.year)
-      return dates
-    }
+    datesForAdding() {return getDates(this.daysNumsForAdding(), this.monthIndex, this.year)}
   }
 
   const nextData: DateData = {
@@ -55,14 +57,11 @@ const getDaysInfo = (currentDate = new Date()) => {
     },
 
     daysNumsForAdding() {
-      const allDaysNums: number[] = range(1, this.daysInMonthAmount)
-      return allDaysNums.slice(0, this.daysForAddingAmount + 1)
+      const allDaysNums: number[] = range(1, this.daysInMonthAmount())
+      return allDaysNums.slice(0, this.daysForAddingAmount() + 1)
     },
 
-    datesForAdding() {
-      const dates = getDates(this.daysNumsForAdding(), this.monthIndex, this.year)
-      return dates
-    }
+    datesForAdding() {return getDates(this.daysNumsForAdding(), this.monthIndex, this.year)}
   }
 
   return {
@@ -77,6 +76,6 @@ const getDaysInfo = (currentDate = new Date()) => {
   }
 }
 
-const daysInfo = getDaysInfo(/* date */) // date - for the future, to add an option for month changing (today or first day of next/prev month)
+const daysInfo: DaysInfo = getDaysInfo(/* date */) // date - for the future, to add an option for month changing (today or first day of next/prev month)
 
 export default daysInfo

@@ -81,11 +81,12 @@ const Calendar = () => {
 
           { isLoading ? <TaskListProgress /> : 
 
-          days.map((date: string) => {
-            const dayTasks = state.tasks.filter(task => task.due.date === date)
+          days.map((dayDate: string) => {
 
-            return (<Grid item xs={1.7} key={date}>
-              <CalendarDay dayDate={date} dayTasks={dayTasks} />
+            const dayTasks = state.tasks.filter(task => task.due.date === dayDate)
+
+            return (<Grid item xs={1.7} key={dayDate}>
+              <CalendarDay dayDate={dayDate} dayTasks={dayTasks} />
             </Grid>)
           })
         }
