@@ -19,21 +19,21 @@ interface DaysInfo {
   monthFilter: string,
 }
 
-const getDaysInfo = (currentDate = new Date()): DaysInfo => {
+const getDaysInfo = (currentDate: Date = new Date()): DaysInfo => {
 
   const currentData: DateData = {
     monthIndex: currentDate.getMonth(),
     year: currentDate.getFullYear(),
     daysInMonthAmount() {return getNumDaysInMonth(this.monthIndex)},
     firstDayOfMonthWeekday() {return getFirstDayOfMonth(this.year, this.monthIndex).getDay()},
-    isJan() {return this.monthIndex - 1 < 0},
+    isJan() {return this.monthIndex + 1 === 1},
     isDec() {return this.monthIndex === 11},
     datesForAdding() {return getDates(range(1, this.daysInMonthAmount()), this.monthIndex, this.year)}
   }
 
   const prevData: DateData = {
-    monthIndex: currentData.isJan ? 11 : currentData.monthIndex - 1,
-    year: currentData.isJan ? currentData.year - 1 : currentData.year,
+    monthIndex: currentData.isJan() ? 11 : currentData.monthIndex - 1,
+    year: currentData.isJan() ? currentData.year - 1 : currentData.year,
     daysInMonthAmount() {return getNumDaysInMonth(this.monthIndex)},
     daysForAddingAmount() {return weekDays.length - currentData.firstDayOfMonthWeekday()},
 
@@ -46,8 +46,8 @@ const getDaysInfo = (currentDate = new Date()): DaysInfo => {
   }
 
   const nextData: DateData = {
-    monthIndex: currentData.isDec ? 0 : currentData.monthIndex + 1,
-    year: currentData.isDec ? currentData.year + 1 : currentData.year,
+    monthIndex: currentData.isDec() ? 0 : currentData.monthIndex + 1,
+    year: currentData.isDec() ? currentData.year + 1 : currentData.year,
     daysInMonthAmount() {return getNumDaysInMonth(this.monthIndex)},
 
     daysForAddingAmount() {
@@ -68,14 +68,14 @@ const getDaysInfo = (currentDate = new Date()): DaysInfo => {
     days: [
       ...prevData.datesForAdding().slice(1),
       ...currentData.datesForAdding(),
-      ...nextData.datesForAdding().slice(-2, 1),
+      ...nextData.datesForAdding().slice(0, 1),
     ],
-    monthFilter:`
+    monthFilter: `
       due after: ${prevData.datesForAdding()[0]} | due before: ${nextData.datesForAdding()[nextData.daysNumsForAdding().length - 1]}
     `,
   }
 }
 
-const daysInfo: DaysInfo = getDaysInfo(/* date */) // date - for the future, to add an option for month changing (today or first day of next/prev month)
+const daysInfo: DaysInfo = getDaysInfo(/* Date */)
 
 export default daysInfo

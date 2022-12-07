@@ -45,10 +45,9 @@ const AddTask = (props) => {
     taskTitle: string;
   }
 
-  const errors: FormikErrors<FormValues> = {};
+  const errors: FormikErrors<FormValues> = {}
+
   const validate = (values: FormValues) => {
-
-
     if (!values.taskTitle) {
       errors.taskTitle = 'Required';
     } else if (values.taskTitle.length > 120) {
@@ -82,7 +81,7 @@ const AddTask = (props) => {
       addTask({ ...values })
       resetForm()
     }
-  });
+  })
 
 
   return (

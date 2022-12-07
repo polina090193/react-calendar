@@ -1,4 +1,5 @@
 type month = {
+  id: number,
   name: string,
   daysNum: number,
 }
@@ -8,18 +9,18 @@ const leapYear = (year) => {
 }
 
 export const months: month[] = [
-  { name: 'Jan', daysNum: 31 },
-  { name: 'Feb', daysNum: leapYear(new Date().getFullYear()) ? 29 : 28 },
-  { name: 'Mar', daysNum: 31 },
-  { name: 'Apr', daysNum: 30 },
-  { name: 'May', daysNum: 31 },
-  { name: 'Jun', daysNum: 30 },
-  { name: 'Jul', daysNum: 31 },
-  { name: 'Aug', daysNum: 31 },
-  { name: 'Sep', daysNum: 30 },
-  { name: 'Oct', daysNum: 31 },
-  { name: 'Nov', daysNum: 30 },
-  { name: 'Dec', daysNum: 31 },
+  { id: 1, name: 'Jan', daysNum: 31 },
+  { id: 2, name: 'Feb', daysNum: leapYear(new Date().getFullYear()) ? 29 : 28 },
+  { id: 3, name: 'Mar', daysNum: 31 },
+  { id: 4, name: 'Apr', daysNum: 30 },
+  { id: 5, name: 'May', daysNum: 31 },
+  { id: 6, name: 'Jun', daysNum: 30 },
+  { id: 7, name: 'Jul', daysNum: 31 },
+  { id: 8, name: 'Aug', daysNum: 31 },
+  { id: 9, name: 'Sep', daysNum: 30 },
+  { id: 10, name: 'Oct', daysNum: 31 },
+  { id: 11, name: 'Nov', daysNum: 30 },
+  { id: 12, name: 'Dec', daysNum: 31 },
 ];
 
 export const weekDays: string[] = [

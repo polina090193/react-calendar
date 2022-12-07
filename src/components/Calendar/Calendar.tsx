@@ -5,6 +5,7 @@ import { weekDays } from '@/consts/daysConsts'
 import daysInfo from "@/api/daysChoosing"
 
 import Grid from '@mui/material/Grid'
+import MonthSelectForm from "../MonthSelectForm/MonthSelectForm"
 import CalendarDay from "./CalendarDay/CalendarDay"
 import Typography from "@mui/material/Typography"
 import CircularProgress from '@mui/material/CircularProgress'
@@ -66,6 +67,7 @@ const Calendar = () => {
 
   return (
     <div className={CalendarCSS.calendar}>
+      <MonthSelectForm setTasks={setTasks} />
       <div className={CalendarCSS.days}>
 
         <Grid container rowSpacing={1} columnSpacing={1}>
