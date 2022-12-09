@@ -1,9 +1,7 @@
 import React from 'react'
-import { tasksAPI } from "@/api/todoAPI"
 import { FormikErrors, useFormik } from 'formik'
 import { months } from '@/consts/daysConsts'
 
-import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
@@ -16,44 +14,30 @@ import MonthSelectFormCSS from './MonthSelectForm.module.css'
 import ButtonGroup from '@mui/material/ButtonGroup';
 import Button from '@mui/material/Button';
 
-// const TaskListItemIcon = styled(ListItemIcon)(() => ({
-//   minWidth: 'unset',
-//   height: 30,
-// }))
-
-// const ClosingTaskProgress = styled(CircularProgress)(() => ({
-//   margin: '5px 12px 0 10px',
-// }))
-
 const MonthSelectForm = props => {
-  const { setTasks } = props
+  const { getCalendarInfo } = props
 
-  const [dateFormWaiting, setDateFormWaiting] = React.useState<boolean>(false);
-  // const [selectedMonth, setSelectedMonth] = React.useState<number>(new Date().getMonth())
-  // const [selectedYear, setSelectedYear] = React.useState<number>(new Date().getFullYear())
+  const [isDateFormWaiting, setDateFormWaiting] = React.useState<boolean>(false);
 
   const resetToToday = () => {
-
+    setDate({ monthID: new Date().getMonth(), year: new Date().getFullYear() })
   }
 
   const setDate = async ({monthID, year}) => {
     setDateFormWaiting(true)
-    const monthName = months.find(month => month.id === monthID).name
-    const filter = `1 ${monthName} ${year}`
-    console.log('setDate filter', filter);
-    await setTasks(filter)
+    await getCalendarInfo(new Date(year, monthID, 1))
     setDateFormWaiting(false)
   }
 
-  const { handleSubmit, handleChange, handleBlur, values, touched } = useFormik<{
+  const { handleSubmit, handleChange, values, resetForm } = useFormik<{
     monthID: number;
     year: number;
   }>({
     initialValues: {
-      monthID: new Date().getMonth() + 1,
+      monthID: new Date().getMonth(),
       year: new Date().getFullYear(),
     },
-    onSubmit: (values, { resetForm }) => {
+    onSubmit: (values) => {
       setDate({ ...values })
     }
   })
@@ -82,8 +66,11 @@ const MonthSelectForm = props => {
         onChange={handleChange}
       />
       <ButtonGroup variant="outlined" aria-label="outlined button group">
-        <Button type="submit">Submit</Button>
-        <Button type="button" onClick={resetToToday}>Today</Button>
+        <Button type="submit">{ isDateFormWaiting ? <CircularProgress /> : 'Submit' }</Button>
+        <Button type="button" onClick={() => {
+          resetToToday()
+          resetForm()
+        }}>{ isDateFormWaiting ? <CircularProgress /> : 'Today' }</Button>
       </ButtonGroup>
     </form>
   );

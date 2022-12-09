@@ -2,7 +2,7 @@ import { useEffect, useReducer, useState } from "react"
 import { tasksAPI } from "@/api/todoAPI"
 import { Task } from '@doist/todoist-api-typescript/dist/types/entities'
 import { weekDays } from '@/consts/daysConsts'
-import daysInfo from "@/api/daysChoosing"
+import getDaysInfo from "@/api/daysChoosing"
 
 import Grid from '@mui/material/Grid'
 import MonthSelectForm from "../MonthSelectForm/MonthSelectForm"
@@ -13,8 +13,6 @@ import CircularProgress from '@mui/material/CircularProgress'
 import { styled } from '@mui/material/styles'
 import CalendarCSS from './Calendar.module.css'
 import { colors } from "@/consts/css"
-
-const { days, monthFilter } = daysInfo
 
 type DayState = {
   tasks: Task[],
@@ -51,6 +49,8 @@ const TaskListProgress = styled(CircularProgress)(() => ({
 const Calendar = () => {
   const [state, dispatch] = useReducer(calendarDayReducer, initialDayState)
   const [isLoading, setIsLoading] = useState(true)
+  const [days, setDays] = useState([])
+  const [monthFilter, setMonthFilter] = useState('')
 
   const setTasks = async (filter = null) => {
     const tasks = await getTasks(filter)
@@ -61,13 +61,23 @@ const Calendar = () => {
     setIsLoading(false)
   }
 
+  const getCalendarInfo = (date = new Date()) => {
+    const daysInfo = getDaysInfo(date)
+    setDays(daysInfo.days)
+    setMonthFilter(daysInfo.monthFilter)
+  }
+
+  useEffect(() => {
+    getCalendarInfo(new Date())
+  }, [])
+
   useEffect(() => {
     setTasks(monthFilter)
-  }, [])
+  }, [monthFilter])
 
   return (
     <div className={CalendarCSS.calendar}>
-      <MonthSelectForm setTasks={setTasks} />
+      <MonthSelectForm getCalendarInfo={getCalendarInfo} />
       <div className={CalendarCSS.days}>
 
         <Grid container rowSpacing={1} columnSpacing={1}>

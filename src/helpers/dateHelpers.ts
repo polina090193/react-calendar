@@ -8,7 +8,11 @@ export const makeDateTitle = (dayDate) => {
   return `${day} ${month} ${year}`
 }
 
-export const getFirstDayOfMonth = (year, month) =>  new Date(year, month, 1)
+export const getFirstDayOfMonth = (year, month) => {
+  const weekDay = new Date(year, month, 1).getDay()
+  const weekDayWithSunday = weekDay/*  === 0 ?  */
+  return weekDayWithSunday
+}
 
 export const adjustDate = num => num.toString().length === 1 ? `0${num}` : num
 
