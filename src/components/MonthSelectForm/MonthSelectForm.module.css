@@ -1,4 +1,3 @@
-.buttons {
-  display: flex;
-  justify-content: space-between;
+.monthSelectForm {
+  width: 100%;
 }
