@@ -20,4 +20,18 @@ export const getDates = (nums, month, year) => nums.map(dayNum => `${year}-${adj
 
 export const getNumDaysInMonth = monthIndex => months[monthIndex].daysNum
 
-export default { makeDateTitle, getFirstDayOfMonth, adjustDate, getDates, getNumDaysInMonth }
+export const getPrevMonth = (monthIndex, year) => {
+  const isCurrentMonthJan: boolean = monthIndex === 0
+  const prevMonthIndex: number = isCurrentMonthJan ? 11 : monthIndex - 1
+  const prevYear: number = isCurrentMonthJan ? year - 1 : year
+  return { prevMonthIndex, prevYear }
+}
+
+export const getNextMonth = (monthIndex, year) => {
+  const isCurrentMonthDec: boolean = monthIndex === 11
+  const nextMonthIndex: number = isCurrentMonthDec ? 0 : monthIndex + 1
+  const nextYear: number = isCurrentMonthDec ? year + 1 : year
+  return { nextMonthIndex, nextYear }
+}
+
+export default { makeDateTitle, getFirstDayOfMonth, adjustDate, getDates, getNumDaysInMonth, getPrevMonth, getNextMonth }

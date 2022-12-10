@@ -1,14 +1,12 @@
 import { range } from '@/helpers/mathHelpers'
 import { weekDays, calendarLength } from '@/consts/daysConsts'
-import { getFirstDayOfMonth, getDates, getNumDaysInMonth } from '@/helpers/dateHelpers'
+import { getFirstDayOfMonth, getDates, getNumDaysInMonth, getPrevMonth, getNextMonth } from '@/helpers/dateHelpers'
 
 interface DateData {
   monthIndex: number,
   year: number,
   daysInMonthAmount: () => number,
   firstDayOfMonthWeekday?: () => number,
-  isJan?: () => boolean,
-  isDec?: () => boolean,
   daysForAddingAmount?: () => number,
   daysNumsForAdding?: () => number[],
   datesForAdding?: () => string[],
@@ -26,14 +24,12 @@ const getDaysInfo = (currentDate: Date = new Date()): DaysInfo => {
     year: currentDate.getFullYear(),
     daysInMonthAmount() {return getNumDaysInMonth(this.monthIndex)},
     firstDayOfMonthWeekday() {return getFirstDayOfMonth(this.year, this.monthIndex)},
-    isJan() {return this.monthIndex === 0},
-    isDec() {return this.monthIndex === 11},
     datesForAdding() {return getDates(range(1, this.daysInMonthAmount()), this.monthIndex, this.year)}
   }
 
   const prevData: DateData = {
-    monthIndex: currentData.isJan() ? 11 : currentData.monthIndex - 1,
-    year: currentData.isJan() ? currentData.year - 1 : currentData.year,
+    monthIndex: getPrevMonth(currentData.monthIndex, currentData.year).prevMonthIndex,
+    year: getPrevMonth(currentData.monthIndex, currentData.year).prevYear,
     daysInMonthAmount() {return getNumDaysInMonth(this.monthIndex)},
     daysForAddingAmount() {
       const firstDayOfCurrentMonth = currentData.firstDayOfMonthWeekday()
@@ -49,8 +45,8 @@ const getDaysInfo = (currentDate: Date = new Date()): DaysInfo => {
   }
 
   const nextData: DateData = {
-    monthIndex: currentData.isDec() ? 0 : currentData.monthIndex + 1,
-    year: currentData.isDec() ? currentData.year + 1 : currentData.year,
+    monthIndex: getNextMonth(currentData.monthIndex, currentData.year).nextMonthIndex,
+    year: getNextMonth(currentData.monthIndex, currentData.year).nextYear,
     daysInMonthAmount() {return getNumDaysInMonth(this.monthIndex)},
 
     daysForAddingAmount() {
