@@ -83,7 +83,7 @@ const Calendar = () => {
 
         <Grid container rowSpacing={1} columnSpacing={1}>
 
-          {weekDays.map((weekDay) => (<Grid item xs={1.7} key={weekDay}>
+          {weekDays.map((weekDay) => (<Grid item xs={1.7} sx={{ position: 'sticky', top: 0, backgroundColor: 'white', zIndex: 1 }} key={weekDay}>
             <Typography
               variant="h6"
               sx={{ color: colors.mainTextColor, textAlign: 'center', }}
