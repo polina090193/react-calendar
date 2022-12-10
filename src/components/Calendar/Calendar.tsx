@@ -1,6 +1,5 @@
-import { useCallback, useEffect, useReducer, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import { tasksAPI } from "@/api/todoAPI"
-import { Task } from '@doist/todoist-api-typescript/dist/types/entities'
 import { weekDays } from '@/consts/daysConsts'
 import getDaysInfo from "@/api/daysChoosing"
 
@@ -14,31 +13,9 @@ import { styled } from '@mui/material/styles'
 import CalendarCSS from './Calendar.module.css'
 import { colors } from "@/consts/css"
 
-type DayState = {
-  tasks: Task[],
-}
-
-const initialDayState: DayState = {
-  tasks: [],
-}
-
-enum DayActionKind {
-  SetTasks = 'SET_TASKS',
-}
-
 async function getTasks(filter) {
   const tasks = await tasksAPI.getTasks(filter)
   return tasks
-}
-
-function calendarDayReducer(state, action) {
-  const { type, data } = action;
-  switch (type) {
-    case DayActionKind.SetTasks:
-      return data
-    default:
-      return state
-  }
 }
 
 const TaskListProgress = styled(CircularProgress)(() => ({
@@ -46,18 +23,15 @@ const TaskListProgress = styled(CircularProgress)(() => ({
 }))
 
 const Calendar = () => {
-  const [state, dispatch] = useReducer(calendarDayReducer, initialDayState)
+  const [tasks, setTasks] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const [days, setDays] = useState([])
   const [monthDate, setMonthDate] = useState(new Date())
   const [monthFilter, setMonthFilter] = useState('')
 
-  const setTasks = useCallback(async (filter = null) => {
-    const tasks = await getTasks(filter)
-    await dispatch({
-      type: DayActionKind.SetTasks,
-      data: { tasks },
-    })
+  const getTasksForCalendar = useCallback(async (filter = null) => {
+    const loadedTasks = await getTasks(filter)
+    setTasks(loadedTasks)
     setIsLoading(false)
   }, [])
 
@@ -69,12 +43,12 @@ const Calendar = () => {
   }, [])
 
   useEffect(() => {
-    getCalendarInfo(state.date)
-  }, [getCalendarInfo, state.date])
+    getCalendarInfo(monthDate)
+  }, [getCalendarInfo, monthDate])
 
   useEffect(() => {
-    setTasks(monthFilter)
-  }, [setTasks, monthFilter])
+    getTasksForCalendar(monthFilter)
+  }, [getTasksForCalendar, monthFilter])
 
   return (
     <div className={CalendarCSS.calendar}>
@@ -96,7 +70,7 @@ const Calendar = () => {
 
           days.map((dayDate: string) => {
 
-            const dayTasks = state.tasks.filter(task => task.due.date === dayDate)
+            const dayTasks = tasks.filter(task => task.due.date === dayDate)
 
             return (<Grid item xs={1.7} key={dayDate}>
               <CalendarDay dayDate={dayDate} dayTasks={dayTasks} />
