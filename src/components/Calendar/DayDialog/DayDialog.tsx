@@ -31,20 +31,20 @@ const OpenAddTaskInputButton = styled(Button)(() => ({
 
 const DayDialog = (props) => {
 
-  const { onClose, open, tasks, updateTasks, dayDate, dayTitle } = props;
-  const [isAddTaskFormActive, setIsAddTaskFormActive] = React.useState<boolean>(false);
+  const { onClose, open, tasks, updateTasks, dayDate, dayTitle } = props
+  const [isAddTaskFormActive, setIsAddTaskFormActive] = React.useState<boolean>(false)
 
   const handleClose = () => {
-    onClose();
-  };
+    onClose()
+  }
 
   const openAddTaskForm = () => {
-    setIsAddTaskFormActive(true);
-  };
+    setIsAddTaskFormActive(true)
+  }
 
   const closeAddTaskForm = () => {
-    setIsAddTaskFormActive(false);
-  };
+    setIsAddTaskFormActive(false)
+  }
 
   return (
     <DayModal onClose={handleClose} open={open}>
@@ -62,8 +62,8 @@ const DayDialog = (props) => {
         : <OpenAddTaskInputButton onClick={openAddTaskForm}>+</OpenAddTaskInputButton>}
 
     </DayModal>
-  );
+  )
 }
 
 
-export default DayDialog;
+export default DayDialog

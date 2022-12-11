@@ -51,17 +51,17 @@ const CalendarDay = (props) => {
 
   useEffect(() => {
     setTasks(dayTasks)
-  }, [dayTasks]);
+  }, [dayTasks])
 
   const [openDay, setOpenDay] = React.useState(false)
 
   const handleClickOpenDay = () => {
-    setOpenDay(true);
-  };
+    setOpenDay(true)
+  }
 
   const handleCloseDay = () => {
-    setOpenDay(false);
-  };
+    setOpenDay(false)
+  }
 
   return (
     <CalendarPaper>
@@ -91,7 +91,7 @@ const CalendarDay = (props) => {
         isDialog
       />
     </CalendarPaper>
-  );
+  )
 }
 
-export default CalendarDay;
+export default CalendarDay

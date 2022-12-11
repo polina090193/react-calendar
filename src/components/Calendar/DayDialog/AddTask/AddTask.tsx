@@ -1,5 +1,5 @@
 import React, { useRef } from 'react'
-import { useFormik, FormikErrors } from "formik";
+import { useFormik, FormikErrors } from "formik"
 import { tasksAPI } from "@/api/todoAPI"
 
 import Button from '@mui/material/Button'
@@ -39,23 +39,23 @@ const CancelTaskButton = styled(AddTaskFormButton)(() => ({
 const AddTask = (props) => {
   const { updateTasks, dayDate, closeAddTaskForm } = props
 
-  const [taskIsAdding, setTaskIsAdding] = React.useState<boolean>(false);
+  const [taskIsAdding, setTaskIsAdding] = React.useState<boolean>(false)
 
   interface FormValues {
-    taskTitle: string;
+    taskTitle: string
   }
 
   const errors: FormikErrors<FormValues> = {}
 
   const validate = (values: FormValues) => {
     if (!values.taskTitle) {
-      errors.taskTitle = 'Required';
+      errors.taskTitle = 'Required'
     } else if (values.taskTitle.length > 120) {
-      errors.taskTitle = 'Must be 120 characters or less'; // Add description if you would like to add more.
+      errors.taskTitle = 'Must be 120 characters or less' // Add description if you would like to add more.
     }
 
-    return errors;
-  };
+    return errors
+  }
   
   const titleInputRef = useRef(null)
   
@@ -71,7 +71,7 @@ const AddTask = (props) => {
   }
 
   const { handleSubmit, handleChange, handleBlur, values, touched } = useFormik<{
-    taskTitle: string;
+    taskTitle: string
   }>({
     initialValues: {
       taskTitle: '',
@@ -103,7 +103,7 @@ const AddTask = (props) => {
         <CancelTaskButton onClick={closeAddTaskForm}>X</CancelTaskButton>
       </div>
     </form>
-  );
+  )
 }
 
 

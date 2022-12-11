@@ -7,7 +7,7 @@ import ListItemIcon from "@mui/material/ListItemIcon"
 import ListItemText from "@mui/material/ListItemText"
 import CircularProgress from '@mui/material/CircularProgress'
 
-import { styled } from '@mui/material/styles';
+import { styled } from '@mui/material/styles'
 import { colors } from '@/consts/css'
 
 const TaskListItemIcon = styled(ListItemIcon)(() => ({
@@ -21,7 +21,7 @@ const ClosingTaskProgress = styled(CircularProgress)(() => ({
 
 const Task = props => {
   const { id, dayDate, content, isDialog, updateTasks } = props
-  const [taskIsClosing, setTaskIsClosing] = React.useState<boolean>(false);
+  const [taskIsClosing, setTaskIsClosing] = React.useState<boolean>(false)
 
   const closeTask = async () => {
     setTaskIsClosing(true)
@@ -37,7 +37,7 @@ const Task = props => {
       </TaskListItemIcon>
       <ListItemText primary={content} primaryTypographyProps={{ fontSize: isDialog ? '1 rem' : '0.8rem' }} />
     </ListItemButton>
-  );
+  )
 }
 
 export default Task

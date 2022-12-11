@@ -1,16 +1,16 @@
 import React from 'react'
 import { useFormik } from 'formik'
 import { months } from '@/consts/daysConsts'
-import { getPrevMonth, getNextMonth } from '@/helpers/dateHelpers';
+import { getPrevMonth, getNextMonth } from '@/helpers/dateHelpers'
 
-import InputLabel from '@mui/material/InputLabel';
-import Select from '@mui/material/Select';
-import MenuItem from '@mui/material/MenuItem';
+import InputLabel from '@mui/material/InputLabel'
+import Select from '@mui/material/Select'
+import MenuItem from '@mui/material/MenuItem'
 import TextField from '@mui/material/TextField'
 import CircularProgress from '@mui/material/CircularProgress'
 
-import Button from '@mui/material/Button';
-import Box from '@mui/material/Box';
+import Button from '@mui/material/Button'
+import Box from '@mui/material/Box'
 
 const MonthSelectForm = props => {
   const { getCalendarInfo, date } = props
@@ -30,7 +30,7 @@ const MonthSelectForm = props => {
     year: getNextMonth(currentMonth.monthIndex, currentMonth.year).nextYear,
   }
 
-  const [isDateFormWaiting, setDateFormWaiting] = React.useState<boolean>(false);
+  const [isDateFormWaiting, setDateFormWaiting] = React.useState<boolean>(false)
 
   const resetToToday = () => {
     setDate({ monthIndex: new Date().getMonth(), year: new Date().getFullYear() })
@@ -43,8 +43,8 @@ const MonthSelectForm = props => {
   }
 
   const { handleSubmit, handleChange, values, resetForm } = useFormik<{
-    monthIndex: number;
-    year: number;
+    monthIndex: number
+    year: number
   }>({
     initialValues: currentMonth,
     onSubmit: (values) => {
@@ -119,7 +119,7 @@ const MonthSelectForm = props => {
         </Button>
       </Box>
     </form>
-  );
+  )
 }
 
 export default MonthSelectForm

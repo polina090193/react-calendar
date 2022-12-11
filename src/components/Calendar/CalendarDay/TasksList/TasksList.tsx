@@ -22,4 +22,4 @@ const TasksList = props => {
   )
 }
 
-export default TasksList;
+export default TasksList

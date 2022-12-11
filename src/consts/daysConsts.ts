@@ -1,11 +1,11 @@
-type month = {
+interface month {
   id: number,
   name: string,
   daysNum: number,
 }
 
 const leapYear = (year) => {
-  return ((year % 4 === 0) && (year % 100 !== 0)) || (year % 400 === 0);
+  return ((year % 4 === 0) && (year % 100 !== 0)) || (year % 400 === 0)
 }
 
 export const months: month[] = [
@@ -21,7 +21,7 @@ export const months: month[] = [
   { id: 9, name: 'Oct', daysNum: 31 },
   { id: 10, name: 'Nov', daysNum: 30 },
   { id: 11, name: 'Dec', daysNum: 31 },
-];
+]
 
 export const weekDays: string[] = [
   'Mon',
