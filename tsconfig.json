@@ -1,12 +1,18 @@
 {
     "extends": "./tsconfig.paths.json",
+    "include": [
+        "src/**/*",
+        "jest-setup.js"
+    ],
     "compilerOptions": {
         "target": "ES2020",
         "esModuleInterop": true,
         "moduleResolution": "node",
         "jsx": "react-jsx",
         "types": [
-            "node"
-        ],
-    },
+            "node",
+            "jest",
+            "@testing-library/jest-dom"
+        ]
+    }
 }

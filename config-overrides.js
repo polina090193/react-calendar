@@ -1,9 +1,6 @@
-const { alias } = require('react-app-rewire-alias');
+const {aliasWebpack, aliasJest} = require('react-app-alias')
 
-module.exports = function override(config) {
-  alias({
-    '@': 'src',
-  })(config);
+const options = {}
 
-  return config;
-};
+module.exports = aliasWebpack(options)
+module.exports.jest = aliasJest(options)
