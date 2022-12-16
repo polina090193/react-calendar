@@ -3,13 +3,12 @@ import Calendar from '@/components/Calendar/Calendar'
 import '@testing-library/jest-dom'
 
 describe('Calendar', () => {
-  it('has monday', () => {
+  it('has weekdays', () => {
     render(<Calendar />)
 
-    const monday = screen.getByText('Tue')
-    const friday = screen.getByText('Fri')
+    const weekdays = screen.getAllByRole('weekday')
 
-    expect(monday).toBeInTheDocument()
-    expect(friday).toBeInTheDocument()
+    expect(weekdays[0]).toHaveTextContent('Mon')
+    expect(weekdays[4]).toHaveTextContent('Fri')
   })
 })

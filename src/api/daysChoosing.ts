@@ -1,21 +1,6 @@
-import { range } from '@/helpers/mathHelpers'
+import { rangeAbsolute } from '@/helpers/mathHelpers'
 import { weekDays, calendarLength } from '@/consts/daysConsts'
 import { getFirstDayOfMonth, getDates, getNumDaysInMonth, getPrevMonth, getNextMonth } from '@/helpers/dateHelpers'
-
-interface DateData {
-  monthIndex: number,
-  year: number,
-  daysInMonthAmount: () => number,
-  firstDayOfMonthWeekday?: () => number,
-  daysForAddingAmount?: () => number,
-  daysNumsForAdding?: () => number[],
-  datesForAdding?: () => string[],
-}
-
-interface DaysInfo {
-  days: string[],
-  monthFilter: string,
-}
 
 const getDaysInfo = (currentDate: Date = new Date()): DaysInfo => {
 
@@ -24,7 +9,7 @@ const getDaysInfo = (currentDate: Date = new Date()): DaysInfo => {
     year: currentDate.getFullYear(),
     daysInMonthAmount() {return getNumDaysInMonth(this.monthIndex)},
     firstDayOfMonthWeekday() {return getFirstDayOfMonth(this.year, this.monthIndex)},
-    datesForAdding() {return getDates(range(1, this.daysInMonthAmount()), this.monthIndex, this.year)}
+    datesForAdding() {return getDates(rangeAbsolute(1, this.daysInMonthAmount()), this.monthIndex, this.year)}
   }
 
   const prevData: DateData = {
@@ -37,7 +22,7 @@ const getDaysInfo = (currentDate: Date = new Date()): DaysInfo => {
     },
 
     daysNumsForAdding() {
-      const allDaysNums: number[] = range(1, this.daysInMonthAmount())
+      const allDaysNums: number[] = rangeAbsolute(1, this.daysInMonthAmount())
       return allDaysNums.slice(-this.daysForAddingAmount() - 1)
     },
 
@@ -56,7 +41,7 @@ const getDaysInfo = (currentDate: Date = new Date()): DaysInfo => {
     },
 
     daysNumsForAdding() {
-      const allDaysNums: number[] = range(1, this.daysInMonthAmount())
+      const allDaysNums: number[] = rangeAbsolute(1, this.daysInMonthAmount())
       return allDaysNums.slice(0, this.daysForAddingAmount())
     },
 

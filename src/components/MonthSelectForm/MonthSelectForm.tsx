@@ -12,8 +12,12 @@ import CircularProgress from '@mui/material/CircularProgress'
 import Button from '@mui/material/Button'
 import Box from '@mui/material/Box'
 
-const MonthSelectForm = props => {
-  const { getCalendarInfo, date } = props
+type MonthSelectFormProps = {
+  getCalendarInfo: (date: Date) => void,
+  date: Date,
+}
+
+const MonthSelectForm: React.FC<MonthSelectFormProps> = ({ getCalendarInfo, date }) => {
 
   const currentMonth = {
     monthIndex: date.getMonth(),

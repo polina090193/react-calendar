@@ -22,7 +22,7 @@ const TaskListProgress = styled(CircularProgress)(() => ({
   margin: '40px auto',
 }))
 
-const Calendar = () => {
+const Calendar: React.FunctionComponent = () => {
   const [tasks, setTasks] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const [days, setDays] = useState([])
@@ -35,7 +35,7 @@ const Calendar = () => {
     setIsLoading(false)
   }, [])
 
-  const getCalendarInfo =  useCallback((date = new Date()) => {
+  const getCalendarInfo = useCallback((date: Date = new Date()) => {
     const daysInfo = getDaysInfo(date)
     setDays(daysInfo.days)
     setMonthDate(date)
@@ -59,6 +59,7 @@ const Calendar = () => {
 
           {weekDays.map((weekDay) => (<Grid item xs={1.7} sx={{ position: 'sticky', top: 0, backgroundColor: 'white', zIndex: 1 }} key={weekDay}>
             <Typography
+              role="weekday"
               variant="h6"
               sx={{ color: colors.mainTextColor, textAlign: 'center', }}
             >
