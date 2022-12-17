@@ -19,11 +19,24 @@ const ClosingTaskProgress = styled(CircularProgress)(() => ({
   margin: '5px 12px 0 10px',
 }))
 
-const Task = props => {
-  const { id, dayDate, content, isDialog, updateTasks } = props
+type TaskProps = {
+  id: string,
+  dayDate: string,
+  isDialog?: boolean,
+  content: string,
+  updateTasks: (dayDate: string) => void,
+}
+
+const Task: React.FC<TaskProps> = ({
+  id,
+  dayDate,
+  content,
+  isDialog = false,
+  updateTasks
+}): JSX.Element => {
   const [taskIsClosing, setTaskIsClosing] = React.useState<boolean>(false)
 
-  const closeTask = async () => {
+  const closeTask = async (): Promise<void> => {
     setTaskIsClosing(true)
     await tasksAPI.closeTask(id)
     await updateTasks(dayDate)

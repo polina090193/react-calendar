@@ -17,30 +17,30 @@ type MonthSelectFormProps = {
   date: Date,
 }
 
-const MonthSelectForm: React.FC<MonthSelectFormProps> = ({ getCalendarInfo, date }) => {
+const MonthSelectForm: React.FC<MonthSelectFormProps> = ({ getCalendarInfo, date }): JSX.Element => {
 
-  const currentMonth = {
+  const currentMonth: DateData = {
     monthIndex: date.getMonth(),
     year: date.getFullYear(),
   }
 
-  const prevMonth = {
-    monthIndex: getPrevMonth(currentMonth.monthIndex, currentMonth.year).prevMonthIndex,
-    year: getPrevMonth(currentMonth.monthIndex, currentMonth.year).prevYear,
+  const prevMonth: DateData = {
+    monthIndex: getPrevMonth(currentMonth.monthIndex, currentMonth.year).monthIndex,
+    year: getPrevMonth(currentMonth.monthIndex, currentMonth.year).year,
   }
 
-  const nextMonth = {
-    monthIndex: getNextMonth(currentMonth.monthIndex, currentMonth.year).nextMonthIndex,
-    year: getNextMonth(currentMonth.monthIndex, currentMonth.year).nextYear,
+  const nextMonth: DateData = {
+    monthIndex: getNextMonth(currentMonth.monthIndex, currentMonth.year).monthIndex,
+    year: getNextMonth(currentMonth.monthIndex, currentMonth.year).year,
   }
 
   const [isDateFormWaiting, setDateFormWaiting] = React.useState<boolean>(false)
 
-  const resetToToday = () => {
+  const resetToToday = (): void => {
     setDate({ monthIndex: new Date().getMonth(), year: new Date().getFullYear() })
   }
 
-  const setDate = async ({ monthIndex, year }) => {
+  const setDate = async ({ monthIndex, year }: DateData): Promise<void> => {
     setDateFormWaiting(true)
     await getCalendarInfo(new Date(year, monthIndex, 1))
     setDateFormWaiting(false)

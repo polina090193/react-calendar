@@ -13,8 +13,8 @@ import { styled } from '@mui/material/styles'
 import CalendarCSS from './Calendar.module.css'
 import { colors } from "@/consts/css"
 
-async function getTasks(filter) {
-  const tasks = await tasksAPI.getTasks(filter)
+async function getTasks(filter: string): Promise<Task[]> {
+  const tasks: Task[] = await tasksAPI.getTasks(filter)
   return tasks
 }
 
@@ -22,21 +22,21 @@ const TaskListProgress = styled(CircularProgress)(() => ({
   margin: '40px auto',
 }))
 
-const Calendar: React.FunctionComponent = () => {
-  const [tasks, setTasks] = useState([])
-  const [isLoading, setIsLoading] = useState(true)
-  const [days, setDays] = useState([])
-  const [monthDate, setMonthDate] = useState(new Date())
-  const [monthFilter, setMonthFilter] = useState('')
+const Calendar: React.FunctionComponent = (): JSX.Element => {
+  const [tasks, setTasks] = useState<Array<Task>>([])
+  const [isLoading, setIsLoading] = useState<boolean>(true)
+  const [days, setDays] = useState<Array<string>>([])
+  const [monthDate, setMonthDate] = useState<Date>(new Date())
+  const [monthFilter, setMonthFilter] = useState<string>('')
 
-  const getTasksForCalendar = useCallback(async (filter = null) => {
-    const loadedTasks = await getTasks(filter)
+  const getTasksForCalendar = useCallback(async (filter = null): Promise<void> => {
+    const loadedTasks: Task[] = await getTasks(filter)
     setTasks(loadedTasks)
     setIsLoading(false)
   }, [])
 
-  const getCalendarInfo = useCallback((date: Date = new Date()) => {
-    const daysInfo = getDaysInfo(date)
+  const getCalendarInfo = useCallback((date: Date = new Date()): void => {
+    const daysInfo: DaysInfo = getDaysInfo(date)
     setDays(daysInfo.days)
     setMonthDate(date)
     setMonthFilter(daysInfo.monthFilter)

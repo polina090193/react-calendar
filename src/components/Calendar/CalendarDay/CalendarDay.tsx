@@ -31,35 +31,41 @@ const CalendarPaper = styled(Paper)(() => ({
   }
 }))
 
-async function getTasks(dayDate) {
+const getTasks = async (dayDate: string): Promise<Task[]> => {
   const tasks = await tasksAPI.getTasks(dayDate)
   return tasks
+
+}
+type CalendarDayProps = {
+  dayDate: string,
+  dayTasks: Task[],
 }
 
-const CalendarDay = (props) => {
-  const { dayDate, dayTasks } = props
-
+const CalendarDay: React.FC<CalendarDayProps> = ({
+  dayDate,
+  dayTasks
+}): JSX.Element => {
   const [tasks, setTasks] = React.useState<Array<Task>>()
   
-  const updateTasks = async (dayDate) => {
+  const updateTasks = async (): Promise<Task[]> => {
     if (!dayDate) return
-    const tasks = await getTasks(dayDate)
+    const tasks: Task[] = await getTasks(dayDate)
     setTasks(tasks)
   }
 
-  const dayTitle = makeDateTitle(dayDate)
+  const dayTitle: string = makeDateTitle(dayDate)
 
   useEffect(() => {
     setTasks(dayTasks)
   }, [dayTasks])
 
-  const [openDay, setOpenDay] = React.useState(false)
+  const [openDay, setOpenDay] = React.useState<boolean>(false)
 
-  const handleClickOpenDay = () => {
+  const handleClickOpenDay = (): void => {
     setOpenDay(true)
   }
 
-  const handleCloseDay = () => {
+  const handleCloseDay = (): void => {
     setOpenDay(false)
   }
 
@@ -88,7 +94,6 @@ const CalendarDay = (props) => {
         dayTitle={dayTitle}
         dayDate={dayDate}
         updateTasks={updateTasks}
-        isDialog
       />
     </CalendarPaper>
   )

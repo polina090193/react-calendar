@@ -36,8 +36,17 @@ const CancelTaskButton = styled(AddTaskFormButton)(() => ({
   width: 40,
 }))
 
-const AddTask = (props) => {
-  const { updateTasks, dayDate, closeAddTaskForm } = props
+type AddTaskProps = {
+  updateTasks: (dayDate: string) => void,
+  dayDate: string,
+  closeAddTaskForm: () => void,
+}
+
+const AddTask: React.FC<AddTaskProps> = ({
+  updateTasks,
+  dayDate,
+  closeAddTaskForm
+}): JSX.Element => {
 
   const [taskIsAdding, setTaskIsAdding] = React.useState<boolean>(false)
 
@@ -47,7 +56,7 @@ const AddTask = (props) => {
 
   const errors: FormikErrors<FormValues> = {}
 
-  const validate = (values: FormValues) => {
+  const validate = (values: FormValues): FormikErrors<FormValues> => {
     if (!values.taskTitle) {
       errors.taskTitle = 'Required'
     } else if (values.taskTitle.length > 120) {

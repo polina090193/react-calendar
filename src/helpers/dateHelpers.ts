@@ -1,6 +1,6 @@
 import { months } from '@/consts/daysConsts'
 
-export const makeDateTitle = (dayDate) => {
+export const makeDateTitle = (dayDate: string): string => {
   const dateObj = new Date(dayDate)
   const day = dateObj.getDate()
   const month = months.find((month, i) => i === dateObj.getMonth()).name
@@ -8,30 +8,26 @@ export const makeDateTitle = (dayDate) => {
   return `${day} ${month} ${year}`
 }
 
-export const getFirstDayOfMonth = (year, month) => {
-  const weekDay = new Date(year, month, 1).getDay()
-  const weekDayWithSunday = weekDay/*  === 0 ?  */
-  return weekDayWithSunday
-}
+export const getFirstDayOfMonth = (year: number, month: number): number => new Date(year, month, 1).getDay()
 
-export const adjustDate = num => num.toString().length === 1 ? `0${num}` : num
+export const adjustDate = (num: number): string => num.toString().length === 1 ? `0${num}` : num.toString()
 
-export const getDates = (nums, month, year) => nums.map(dayNum => `${year}-${adjustDate(month + 1)}-${adjustDate(dayNum)}`)
+export const getDates = (nums: number[], month: number, year: number): string[] => nums.map(dayNum => `${year}-${adjustDate(month + 1)}-${adjustDate(dayNum)}`)
 
-export const getNumDaysInMonth = monthIndex => months[monthIndex].daysNum
+export const getNumDaysInMonth = (monthIndex: number): number => months[monthIndex].daysNum
 
-export const getPrevMonth = (monthIndex, year) => {
+export const getPrevMonth = (monthIndex: number, year: number): DateData => {
   const isCurrentMonthJan: boolean = monthIndex === 0
   const prevMonthIndex: number = isCurrentMonthJan ? 11 : monthIndex - 1
   const prevYear: number = isCurrentMonthJan ? year - 1 : year
-  return { prevMonthIndex, prevYear }
+  return { monthIndex: prevMonthIndex, year: prevYear }
 }
 
-export const getNextMonth = (monthIndex, year) => {
+export const getNextMonth = (monthIndex: number, year: number): DateData => {
   const isCurrentMonthDec: boolean = monthIndex === 11
   const nextMonthIndex: number = isCurrentMonthDec ? 0 : monthIndex + 1
   const nextYear: number = isCurrentMonthDec ? year + 1 : year
-  return { nextMonthIndex, nextYear }
+  return { monthIndex: nextMonthIndex, year: nextYear }
 }
 
 export default { makeDateTitle, getFirstDayOfMonth, adjustDate, getDates, getNumDaysInMonth, getPrevMonth, getNextMonth }

@@ -1,8 +1,21 @@
 import { List } from "@mui/material"
 import Task from "../Task/Task"
 
-const TasksList = props => {
-  const { tasks, updateTasks, isDialog, className, dayDate } = props
+type TasksListProps = {
+  tasks: Task[],
+  updateTasks: (dayDate: string) => void,
+  isDialog?: boolean,
+  className?: string,
+  dayDate: string,
+}
+
+const TasksList: React.FC<TasksListProps> = ({
+  tasks,
+  updateTasks,
+  isDialog = false,
+  className,
+  dayDate
+}): JSX.Element => {
 
   return (
     <List className={className}>

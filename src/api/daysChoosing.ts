@@ -13,8 +13,8 @@ const getDaysInfo = (currentDate: Date = new Date()): DaysInfo => {
   }
 
   const prevData: DateData = {
-    monthIndex: getPrevMonth(currentData.monthIndex, currentData.year).prevMonthIndex,
-    year: getPrevMonth(currentData.monthIndex, currentData.year).prevYear,
+    monthIndex: getPrevMonth(currentData.monthIndex, currentData.year).monthIndex,
+    year: getPrevMonth(currentData.monthIndex, currentData.year).year,
     daysInMonthAmount() {return getNumDaysInMonth(this.monthIndex)},
     daysForAddingAmount() {
       const firstDayOfCurrentMonth = currentData.firstDayOfMonthWeekday()
@@ -30,8 +30,8 @@ const getDaysInfo = (currentDate: Date = new Date()): DaysInfo => {
   }
 
   const nextData: DateData = {
-    monthIndex: getNextMonth(currentData.monthIndex, currentData.year).nextMonthIndex,
-    year: getNextMonth(currentData.monthIndex, currentData.year).nextYear,
+    monthIndex: getNextMonth(currentData.monthIndex, currentData.year).monthIndex,
+    year: getNextMonth(currentData.monthIndex, currentData.year).year,
     daysInMonthAmount() {return getNumDaysInMonth(this.monthIndex)},
 
     daysForAddingAmount() {

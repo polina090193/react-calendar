@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import './App.css'
 import Calendar from "./components/Calendar/Calendar"
 
-const App: React.FC = () => {
+const App: React.FC = (): JSX.Element => {
   useEffect(() => {
     document.title = 'Calendar'
   }, [])

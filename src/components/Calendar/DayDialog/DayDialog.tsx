@@ -29,12 +29,26 @@ const OpenAddTaskInputButton = styled(Button)(() => ({
   },
 }))
 
-const DayDialog = (props) => {
+type DayDialogProps = {
+  onClose: () => void,
+  open: boolean,
+  tasks: Task[],
+  updateTasks: (dayDate: string) => void,
+  dayDate: string,
+  dayTitle: string,
+}
 
-  const { onClose, open, tasks, updateTasks, dayDate, dayTitle } = props
+const DayDialog: React.FC<DayDialogProps> = ({
+  onClose,
+  open,
+  tasks,
+  updateTasks,
+  dayDate,
+  dayTitle,
+}): JSX.Element => {
   const [isAddTaskFormActive, setIsAddTaskFormActive] = React.useState<boolean>(false)
 
-  const handleClose = () => {
+  const handleClose = (): void => {
     onClose()
   }
 
