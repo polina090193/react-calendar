@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { memo, useRef } from 'react'
 import { useFormik, FormikErrors } from "formik"
 import { tasksAPI } from "@/api/todoAPI"
 
@@ -11,11 +11,11 @@ import AddTaskCSS from './AddTask.module.css'
 import { colors } from '@/consts/css'
 
 
-const AddTaskInput = styled(Input)(() => ({
+const AddTaskInput = memo(styled(Input)(() => ({
   width: '100%',
-}))
+})))
 
-const AddTaskFormButton = styled(Button)(() => ({
+const AddTaskFormButton = memo(styled(Button)(() => ({
   backgroundColor: colors.middleYellow,
   width: '50%',
   height: 40,
@@ -25,16 +25,16 @@ const AddTaskFormButton = styled(Button)(() => ({
   ':hover': {
     backgroundColor: colors.strongYellow,
   },
-}))
+})))
 
-const SubmitTaskButton = styled(AddTaskFormButton)(() => ({
+const SubmitTaskButton = memo(styled(AddTaskFormButton)(() => ({
   flexGrow: 1,
   marginRight: 20,
-}))
+})))
 
-const CancelTaskButton = styled(AddTaskFormButton)(() => ({
+const CancelTaskButton = memo(styled(AddTaskFormButton)(() => ({
   width: 40,
-}))
+})))
 
 type AddTaskProps = {
   updateTasks: (dayDate: string) => void,
@@ -60,7 +60,7 @@ const AddTask: React.FC<AddTaskProps> = ({
     if (!values.taskTitle) {
       errors.taskTitle = 'Required'
     } else if (values.taskTitle.length > 120) {
-      errors.taskTitle = 'Must be 120 characters or less' // Add description if you would like to add more.
+      errors.taskTitle = 'Must be 120 characters or less'
     }
 
     return errors
@@ -116,4 +116,4 @@ const AddTask: React.FC<AddTaskProps> = ({
 }
 
 
-export default AddTask
+export default memo(AddTask)

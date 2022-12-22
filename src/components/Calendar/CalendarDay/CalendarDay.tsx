@@ -49,8 +49,8 @@ const CalendarDay: React.FC<CalendarDayProps> = ({
   
   const updateTasks = async (): Promise<Task[]> => {
     if (!dayDate) return
-    const tasks: Task[] = await getTasks(dayDate)
-    setTasks(tasks)
+    const gottenTasks: Task[] = await getTasks(dayDate)
+    setTasks(gottenTasks)
   }
 
   const dayTitle: string = makeDateTitle(dayDate)

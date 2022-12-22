@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react"
+import { memo, useCallback, useEffect, useState } from "react"
 import { tasksAPI } from "@/api/todoAPI"
 import { weekDays } from '@/consts/daysConsts'
 import getDaysInfo from "@/api/daysChoosing"
@@ -18,9 +18,9 @@ async function getTasks(filter: string): Promise<Task[]> {
   return tasks
 }
 
-const TaskListProgress = styled(CircularProgress)(() => ({
+const TaskListProgress = memo(styled(CircularProgress)(() => ({
   margin: '40px auto',
-}))
+})))
 
 const Calendar: React.FunctionComponent = (): JSX.Element => {
   const [tasks, setTasks] = useState<Array<Task>>([])

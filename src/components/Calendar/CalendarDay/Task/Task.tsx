@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { memo } from 'react'
 import { tasksAPI } from "@/api/todoAPI"
 
 import Checkbox from "@mui/material/Checkbox"
@@ -10,14 +10,14 @@ import CircularProgress from '@mui/material/CircularProgress'
 import { styled } from '@mui/material/styles'
 import { colors } from '@/consts/css'
 
-const TaskListItemIcon = styled(ListItemIcon)(() => ({
+const TaskListItemIcon = memo(styled(ListItemIcon)(() => ({
   minWidth: 'unset',
   height: 30,
-}))
+})))
 
-const ClosingTaskProgress = styled(CircularProgress)(() => ({
+const ClosingTaskProgress = memo(styled(CircularProgress)(() => ({
   margin: '5px 12px 0 10px',
-}))
+})))
 
 type TaskProps = {
   id: string,

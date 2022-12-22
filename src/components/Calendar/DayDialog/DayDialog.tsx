@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { memo } from 'react'
 
 import Dialog from '@mui/material/Dialog'
 import DialogTitle from '@mui/material/DialogTitle'
@@ -20,14 +20,14 @@ const DayModal = styled(Dialog)(() => ({
   border: `1px ${colors.middleYellow} solid`,
 }))
 
-const OpenAddTaskInputButton = styled(Button)(() => ({
+const OpenAddTaskInputButton = memo(styled(Button)(() => ({
   backgroundColor: colors.middleYellow,
   color: colors.mainTextColor,
 
   ':hover': {
     backgroundColor: colors.strongYellow,
   },
-}))
+})))
 
 type DayDialogProps = {
   onClose: () => void,
