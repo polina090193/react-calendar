@@ -2,5 +2,8 @@
 module.exports = {
   preset: 'ts-jest',
   testEnvironment: 'node',
-  setupFilesAfterEnv: ['jest-setup.js']
+  setupFilesAfterEnv: ['jest-setup.js'],
+  "setupFiles": [
+    "react-app-polyfill/jsdom"
+  ],
 };

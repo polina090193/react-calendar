@@ -31,6 +31,7 @@ const Calendar: React.FunctionComponent = (): JSX.Element => {
 
   const getTasksForCalendar = useCallback(async (filter = null): Promise<void> => {
     const loadedTasks: Task[] = await getTasks(filter)
+    
     setTasks(loadedTasks)
     setIsLoading(false)
   }, [])

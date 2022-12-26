@@ -61,7 +61,7 @@ const DayDialog: React.FC<DayDialogProps> = ({
   }
 
   return (
-    <DayModal onClose={handleClose} open={open}>
+    <DayModal onClose={handleClose} open={open} data-testid={`dialog-${dayDate}`}>
       <DialogTitle sx={{ color: colors.mainTextColor }}>{dayTitle}</DialogTitle>
 
       <TasksList

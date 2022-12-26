@@ -77,6 +77,7 @@ const CalendarDay: React.FC<CalendarDayProps> = ({
           cursor: 'pointer',
           padding: paperSizes.titlePadding
         }}
+        role="heading"
         onClick={handleClickOpenDay}>{dayTitle}
       </Typography>
 
