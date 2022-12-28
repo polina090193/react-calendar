@@ -1,4 +1,6 @@
 export const rangeAbsolute = (start: number, end: number): number[] => {
+  if (isNaN(start) || isNaN(end)) throw new Error('One of the arguments is not a number')
+  
   const startAbs: number = Math.abs(start)
   const endAbs: number = Math.abs(end)
 

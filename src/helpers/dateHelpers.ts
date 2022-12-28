@@ -1,6 +1,14 @@
 import { months } from '@/consts/daysConsts'
 
+export const isDateStringValidCheck = (dateString: string) => {
+  return !isNaN(Date.parse(dateString))
+}
+
 export const makeDateTitle = (dayDate: string): string => {
+  if (!isDateStringValidCheck(dayDate)) {
+    throw new Error('Invalid date')
+  }
+
   const dateObj = new Date(dayDate)
   const day = dateObj.getDate()
   const month = months.find((month, i) => i === dateObj.getMonth()).name

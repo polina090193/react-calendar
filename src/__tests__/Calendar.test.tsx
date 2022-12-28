@@ -11,4 +11,8 @@ describe('Calendar', () => {
     expect(weekdays[0]).toHaveTextContent('Mon')
     expect(weekdays[4]).toHaveTextContent('Fri')
   })
+
+  it('doesn\'t have weekdays when didn\'t rendered', () => {
+    expect(screen.queryByRole('weekday')).not.toBeInTheDocument()
+  })
 })
