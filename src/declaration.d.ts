@@ -16,11 +16,13 @@ interface TasksAPI {
 interface MonthData {
   monthIndex: number,
   year: number,
-  daysInMonthAmount?: () => number,
-  firstDayOfMonthWeekday?: () => number,
-  daysForAddingAmount?: () => number,
-  daysNumsForAdding?: () => number[],
-  datesForAdding?: () => string[],
+  getDaysInMonthAmount?: () => number,
+  getWeekdayOfFirstDay?: () => number,
+  getDaysForAddingAmount?: () => number,
+  getDaysNumsForAdding?: () => number[],
+  getDatesForAdding?: () => string[],
+  getFirstDate?: () => string,
+  getLastDate?: () => string,
 }
 
 interface DaysInfo {

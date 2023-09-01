@@ -11,7 +11,7 @@ import CircularProgress from '@mui/material/CircularProgress'
 
 import Button from '@mui/material/Button'
 import Box from '@mui/material/Box'
-import getDaysInfo from '@/api/daysChoosing'
+import getDaysInfo from '@/helpers/daysChoosing'
 
 type MonthSelectFormProps = {
   setCalendarInfo: (date: Date, daysInfo: DaysInfo) => void,
