@@ -37,6 +37,7 @@ const Calendar: React.FunctionComponent = (): JSX.Element => {
   }, [])
 
   const setCalendarInfo = useCallback((date: Date = monthDate, daysInfo: DaysInfo): void => {
+    // console.log("daysInfo.monthFilter", daysInfo.monthFilter);
     setDays(daysInfo.days)
     setMonthDate(date)
     setMonthFilter(daysInfo.monthFilter)

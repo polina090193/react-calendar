@@ -3,7 +3,6 @@ import { weekDays, calendarLength } from '@/consts/daysConsts'
 import { getFirstDayOfMonth, getDates, getNumDaysInMonth, getPrevMonth, getNextMonth } from '@/helpers/dateHelpers'
 
 const getDaysInfo = (currentDate: Date = new Date()): DaysInfo => {
-
   const currentData: MonthData = {
     monthIndex: currentDate.getMonth(),
     year: currentDate.getFullYear(),
@@ -48,6 +47,9 @@ const getDaysInfo = (currentDate: Date = new Date()): DaysInfo => {
     datesForAdding() {return getDates(this.daysNumsForAdding(), this.monthIndex, this.year)}
   }
 
+  const dueAfter = prevData.datesForAdding()[0] || currentData.datesForAdding()[0]
+  const dueBefore = nextData.datesForAdding()[nextData.daysNumsForAdding().length - 1] || currentData.datesForAdding()[currentData.datesForAdding().length - 1]
+
   return {
     days: [
       ...prevData.datesForAdding(),
@@ -55,7 +57,7 @@ const getDaysInfo = (currentDate: Date = new Date()): DaysInfo => {
       ...nextData.datesForAdding(),
     ],
     monthFilter: `
-      due after: ${prevData.datesForAdding()[0]} | due before: ${nextData.datesForAdding()[nextData.daysNumsForAdding().length - 1]}
+      due after: ${dueAfter} | due before: ${dueBefore}
     `,
   }
 }
