@@ -13,7 +13,7 @@ interface TasksAPI {
   closeTask: (id: string) => Promise<boolean>,
 }
 
-interface DateData {
+interface MonthData {
   monthIndex: number,
   year: number,
   daysInMonthAmount?: () => number,

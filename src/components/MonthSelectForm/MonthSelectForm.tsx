@@ -11,46 +11,41 @@ import CircularProgress from '@mui/material/CircularProgress'
 
 import Button from '@mui/material/Button'
 import Box from '@mui/material/Box'
+import getDaysInfo from '@/api/daysChoosing'
 
 type MonthSelectFormProps = {
-  getCalendarInfo: (date: Date) => void,
+  setCalendarInfo: (date: Date, daysInfo: DaysInfo) => void,
   date: Date,
 }
 
-const MonthSelectForm: React.FC<MonthSelectFormProps> = ({ getCalendarInfo, date }): JSX.Element => {
+const MonthSelectForm: React.FC<MonthSelectFormProps> = ({ setCalendarInfo, date }): JSX.Element => {
 
-  const currentMonth: DateData = {
+  const selectedMonth: MonthData = {
     monthIndex: date.getMonth(),
     year: date.getFullYear(),
   }
 
-  const prevMonth: DateData = {
-    monthIndex: getPrevMonth(currentMonth.monthIndex, currentMonth.year).monthIndex,
-    year: getPrevMonth(currentMonth.monthIndex, currentMonth.year).year,
-  }
+  const todaysMonth = { monthIndex: new Date().getMonth(), year: new Date().getFullYear() }
 
-  const nextMonth: DateData = {
-    monthIndex: getNextMonth(currentMonth.monthIndex, currentMonth.year).monthIndex,
-    year: getNextMonth(currentMonth.monthIndex, currentMonth.year).year,
-  }
+  const prevMonth: MonthData = getPrevMonth(selectedMonth.monthIndex, selectedMonth.year)
+  const nextMonth: MonthData = getNextMonth(selectedMonth.monthIndex, selectedMonth.year)
 
   const [isDateFormWaiting, setDateFormWaiting] = React.useState<boolean>(false)
 
   const resetToToday = (): void => {
-    setDate({ monthIndex: new Date().getMonth(), year: new Date().getFullYear() })
+    setDate(todaysMonth)
   }
 
-  const setDate = async ({ monthIndex, year }: DateData): Promise<void> => {
+  const setDate = async ({ monthIndex, year }: MonthData): Promise<void> => {
     setDateFormWaiting(true)
-    await getCalendarInfo(new Date(year, monthIndex, 1))
+    const monthDate = new Date(year, monthIndex, 1)
+    const daysInfo: DaysInfo = getDaysInfo(monthDate)
+    await setCalendarInfo(monthDate, daysInfo)
     setDateFormWaiting(false)
   }
 
-  const { handleSubmit, handleChange, values, resetForm } = useFormik<{
-    monthIndex: number
-    year: number
-  }>({
-    initialValues: currentMonth,
+  const { handleSubmit, handleChange, values, resetForm } = useFormik<MonthData>({
+    initialValues: selectedMonth,
     onSubmit: (values) => {
       setDate({ ...values })
     }

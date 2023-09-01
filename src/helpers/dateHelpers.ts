@@ -24,14 +24,14 @@ export const getDates = (nums: number[], month: number, year: number): string[] 
 
 export const getNumDaysInMonth = (monthIndex: number): number => months[monthIndex].daysNum
 
-export const getPrevMonth = (monthIndex: number, year: number): DateData => {
+export const getPrevMonth = (monthIndex: number, year: number): MonthData => {
   const isCurrentMonthJan: boolean = monthIndex === 0
   const prevMonthIndex: number = isCurrentMonthJan ? 11 : monthIndex - 1
   const prevYear: number = isCurrentMonthJan ? year - 1 : year
   return { monthIndex: prevMonthIndex, year: prevYear }
 }
 
-export const getNextMonth = (monthIndex: number, year: number): DateData => {
+export const getNextMonth = (monthIndex: number, year: number): MonthData => {
   const isCurrentMonthDec: boolean = monthIndex === 11
   const nextMonthIndex: number = isCurrentMonthDec ? 0 : monthIndex + 1
   const nextYear: number = isCurrentMonthDec ? year + 1 : year

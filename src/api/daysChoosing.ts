@@ -4,7 +4,7 @@ import { getFirstDayOfMonth, getDates, getNumDaysInMonth, getPrevMonth, getNextM
 
 const getDaysInfo = (currentDate: Date = new Date()): DaysInfo => {
 
-  const currentData: DateData = {
+  const currentData: MonthData = {
     monthIndex: currentDate.getMonth(),
     year: currentDate.getFullYear(),
     daysInMonthAmount() {return getNumDaysInMonth(this.monthIndex)},
@@ -12,7 +12,7 @@ const getDaysInfo = (currentDate: Date = new Date()): DaysInfo => {
     datesForAdding() {return getDates(rangeAbsolute(1, this.daysInMonthAmount()), this.monthIndex, this.year)}
   }
 
-  const prevData: DateData = {
+  const prevData: MonthData = {
     monthIndex: getPrevMonth(currentData.monthIndex, currentData.year).monthIndex,
     year: getPrevMonth(currentData.monthIndex, currentData.year).year,
     daysInMonthAmount() {return getNumDaysInMonth(this.monthIndex)},
@@ -29,7 +29,7 @@ const getDaysInfo = (currentDate: Date = new Date()): DaysInfo => {
     datesForAdding() {return getDates(this.daysNumsForAdding(), this.monthIndex, this.year).slice(1)}
   }
 
-  const nextData: DateData = {
+  const nextData: MonthData = {
     monthIndex: getNextMonth(currentData.monthIndex, currentData.year).monthIndex,
     year: getNextMonth(currentData.monthIndex, currentData.year).year,
     daysInMonthAmount() {return getNumDaysInMonth(this.monthIndex)},

@@ -36,16 +36,16 @@ const Calendar: React.FunctionComponent = (): JSX.Element => {
     setIsLoading(false)
   }, [])
 
-  const getCalendarInfo = useCallback((date: Date = new Date()): void => {
-    const daysInfo: DaysInfo = getDaysInfo(date)
+  const setCalendarInfo = useCallback((date: Date = monthDate, daysInfo: DaysInfo): void => {
     setDays(daysInfo.days)
     setMonthDate(date)
     setMonthFilter(daysInfo.monthFilter)
   }, [])
 
   useEffect(() => {
-    getCalendarInfo(monthDate)
-  }, [getCalendarInfo, monthDate])
+    const daysInfo: DaysInfo = getDaysInfo(monthDate)
+    setCalendarInfo(monthDate, daysInfo)
+  }, [setCalendarInfo, monthDate])
 
   useEffect(() => {
     getTasksForCalendar(monthFilter)
@@ -53,7 +53,7 @@ const Calendar: React.FunctionComponent = (): JSX.Element => {
 
   return (
     <div className={CalendarCSS.calendar}>
-      <MonthSelectForm date={monthDate} getCalendarInfo={getCalendarInfo} />
+      <MonthSelectForm date={monthDate} setCalendarInfo={setCalendarInfo} />
       <div className={CalendarCSS.days}>
 
         <Grid container rowSpacing={1} columnSpacing={1}>
