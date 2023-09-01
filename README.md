@@ -1,4 +1,5 @@
 # React calendar
+Work in progress.
 React app using Todoist API.
 
 - [Todoist API](https://developer.todoist.com/rest/v1/#javascript-sdk)
