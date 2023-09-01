@@ -8,7 +8,7 @@ React app using Todoist API.
 
 ## Getting Started
 
-To get started, just clone the repository and run `npm install && npm run dev`:
+To get started, just clone the repository and run `npm install && npm start`:
 
     git clone https://github.com/polina090193/react-calendar
     npm install
