@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback, useEffect, useMemo } from 'react'
 import { useFormik } from 'formik'
 import { months } from '@/consts/daysConsts'
 import { getPrevMonth, getNextMonth } from '@/helpers/dateHelpers'
@@ -15,20 +15,22 @@ import getDaysInfo from '@/helpers/daysChoosing'
 
 type MonthSelectFormProps = {
   setCalendarInfo: (date: Date, daysInfo: DaysInfo) => void,
-  date: Date,
+  selectedDate: Date,
 }
 
-const MonthSelectForm: React.FC<MonthSelectFormProps> = ({ setCalendarInfo, date }): JSX.Element => {
+const MonthSelectForm: React.FC<MonthSelectFormProps> = ({ setCalendarInfo, selectedDate }): JSX.Element => {
 
-  const selectedMonth: MonthData = {
-    monthIndex: date.getMonth(),
-    year: date.getFullYear(),
-  }
+  const selectedMonth: MonthData = useMemo(() => ({
+      monthIndex: selectedDate.getMonth(),
+      year: selectedDate.getFullYear(),
+  }), [selectedDate]) 
 
   const todaysMonth = { monthIndex: new Date().getMonth(), year: new Date().getFullYear() }
 
-  const prevMonth: MonthData = getPrevMonth(selectedMonth.monthIndex, selectedMonth.year)
-  const nextMonth: MonthData = getNextMonth(selectedMonth.monthIndex, selectedMonth.year)
+  const { prevMonth, nextMonth } = useMemo(() => ({
+    prevMonth: getPrevMonth(selectedMonth.monthIndex, selectedMonth.year),
+    nextMonth: getNextMonth(selectedMonth.monthIndex, selectedMonth.year),
+  }), [selectedMonth])
 
   const [isDateFormWaiting, setDateFormWaiting] = React.useState<boolean>(false)
 
@@ -36,20 +38,25 @@ const MonthSelectForm: React.FC<MonthSelectFormProps> = ({ setCalendarInfo, date
     setDate(todaysMonth)
   }
 
-  const setDate = async ({ monthIndex, year }: MonthData): Promise<void> => {
+  const setDate = useCallback(async ({ monthIndex, year }: MonthData): Promise<void> => {
     setDateFormWaiting(true)
     const monthDate = new Date(year, monthIndex, 1)
     const daysInfo: DaysInfo = getDaysInfo(monthDate)
     await setCalendarInfo(monthDate, daysInfo)
     setDateFormWaiting(false)
-  }
-
-  const { handleSubmit, handleChange, values, resetForm } = useFormik<MonthData>({
+  }, [])
+  
+  const { handleSubmit, handleChange, values, resetForm, setFieldValue } = useFormik<MonthData>({
     initialValues: selectedMonth,
     onSubmit: (values) => {
       setDate({ ...values })
     }
   })
+
+  useEffect(() => {
+    setFieldValue('monthIndex', selectedMonth.monthIndex)
+    setFieldValue('year', selectedMonth.year)
+  }, [setFieldValue, selectedMonth])
 
   return (
     <form onSubmit={handleSubmit}>
