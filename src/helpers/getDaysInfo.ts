@@ -60,9 +60,7 @@ const getDaysInfo = (currentDate: Date = new Date()): DaysInfo => {
       ...currentData.getDatesForAdding(),
       ...nextData.getDatesForAdding(),
     ],
-    monthFilter: `
-      due after: ${dueAfter} | due before: ${dueBefore}
-    `,
+    monthFilter: `due after: ${dueAfter} | due before: ${dueBefore}`,
   }
 }
 

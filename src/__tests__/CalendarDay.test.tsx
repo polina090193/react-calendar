@@ -4,14 +4,14 @@ import '@testing-library/jest-dom'
 import CalendarDay from '@/components/Calendar/CalendarDay/CalendarDay'
 
 describe('CalendarDay', () => {
-  it('handles dialog open', () => {
+  it('handles dialog open', async () => {
     const dayDate = '2022-12-09'
 
     render(<CalendarDay dayDate={dayDate} dayTasks={mockTasks} />)
 
-    const headerOfDay = screen.getByRole('heading')
+    const headerOfDay = await screen.findByRole('heading')
     fireEvent.click(headerOfDay)
-    const dialogOfDay = screen.getByTestId(`dialog-${dayDate}`)
+    const dialogOfDay = await screen.findByTestId(`dialog-${dayDate}`)
 
     expect(dialogOfDay).toBeInTheDocument()
   })

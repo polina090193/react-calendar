@@ -1,7 +1,7 @@
 import { memo, useCallback, useEffect, useState } from "react"
 import { tasksAPI } from "@/api/todoAPI"
 import { weekDays } from '@/consts/daysConsts'
-import getDaysInfo from "@/helpers/daysChoosing"
+import getDaysInfo from "@/helpers/getDaysInfo"
 
 import Grid from '@mui/material/Grid'
 import MonthSelectForm from "../MonthSelectForm/MonthSelectForm"
