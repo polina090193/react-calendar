@@ -9,6 +9,7 @@ import CircularProgress from '@mui/material/CircularProgress'
 
 import { styled } from '@mui/material/styles'
 import { colors } from '@/consts/css'
+import { useDrag } from 'react-dnd'
 
 const TaskListItemIcon = memo(styled(ListItemIcon)(() => ({
   minWidth: 'unset',
@@ -43,8 +44,25 @@ const Task: React.FC<TaskProps> = ({
     setTaskIsClosing(false)
   }
 
+  const [{isDragging}, dragRef] = useDrag(
+    () => ({
+      type: 'task',
+      item: { id, updateOldTasks: updateTasks, oldDate: dayDate },
+      canDrop: () => !isDialog,
+      collect: (monitor) => ({
+        isDragging: !!monitor.isDragging(),
+      }),
+    }),
+    []
+  )
+
   return (
-    <ListItemButton component="a" disableGutters sx={{ padding: '1px', color: colors.mainTextColor }}>
+    <ListItemButton  ref={dragRef} style={{
+      opacity: isDragging ? 0.5 : 1,
+      fontSize: 25,
+      fontWeight: 'bold',
+      cursor: 'move',
+    }} component="a" disableGutters sx={{ padding: '1px', color: colors.mainTextColor }}>
       <TaskListItemIcon>
         {taskIsClosing ? <ClosingTaskProgress size={20} /> : <Checkbox onChange={closeTask} />}
       </TaskListItemIcon>

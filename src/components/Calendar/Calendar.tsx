@@ -1,4 +1,6 @@
-import { memo, useCallback, useEffect, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
+import { HTML5Backend } from "react-dnd-html5-backend"
+import { DndProvider } from 'react-dnd'
 import { tasksAPI } from "@/api/todoAPI"
 import { weekDays } from '@/consts/daysConsts'
 import getDaysInfo from "@/helpers/getDaysInfo"
@@ -7,20 +9,10 @@ import Grid from '@mui/material/Grid'
 import MonthSelectForm from "../MonthSelectForm/MonthSelectForm"
 import CalendarDay from "./CalendarDay/CalendarDay"
 import Typography from "@mui/material/Typography"
-import CircularProgress from '@mui/material/CircularProgress'
 
-import { styled } from '@mui/material/styles'
 import CalendarCSS from './Calendar.module.css'
 import { colors } from "@/consts/css"
-
-async function getTasks(filter: string): Promise<Task[]> {
-  const tasks: Task[] = await tasksAPI.getTasks(filter)
-  return tasks
-}
-
-const TaskListProgress = memo(styled(CircularProgress)(() => ({
-  margin: '40px auto',
-})))
+import TaskListProgress from "../TaskListProgress/TaskListProgress"
 
 const Calendar: React.FunctionComponent = (): JSX.Element => {
   const [tasks, setTasks] = useState<Array<Task>>([])
@@ -29,8 +21,8 @@ const Calendar: React.FunctionComponent = (): JSX.Element => {
   const [monthDate, setMonthDate] = useState<Date>(new Date())
   const [monthFilter, setMonthFilter] = useState<string>('')
 
-  const getTasksForCalendar = useCallback(async (filter = null): Promise<void> => {
-    const loadedTasks: Task[] = await getTasks(filter)
+  const updateTasksListForCalendar = useCallback(async (filter = null): Promise<void> => {
+    const loadedTasks: Task[] = await tasksAPI.getTasks(filter)
     
     setTasks(loadedTasks)
     setIsLoading(false)
@@ -48,42 +40,44 @@ const Calendar: React.FunctionComponent = (): JSX.Element => {
   }, [setCalendarInfo, monthDate])
 
   useEffect(() => {
-    getTasksForCalendar(monthFilter)
-  }, [getTasksForCalendar, monthFilter])
+    updateTasksListForCalendar(monthFilter)
+  }, [updateTasksListForCalendar, monthFilter])
 
   return (
-    <div className={CalendarCSS.calendar}>
-      <MonthSelectForm selectedDate={monthDate} setCalendarInfo={setCalendarInfo} />
-      <div className={CalendarCSS.days}>
+    <DndProvider backend={HTML5Backend}>
+      <div className={CalendarCSS.calendar}>
+        <MonthSelectForm selectedDate={monthDate} setCalendarInfo={setCalendarInfo} />
+        <div className={CalendarCSS.days}>
 
-        <Grid container rowSpacing={1} columnSpacing={1}>
+          <Grid container rowSpacing={1} columnSpacing={1}>
 
-          {weekDays.map((weekDay) => (<Grid item xs={1.7} sx={{ position: 'sticky', top: 0, backgroundColor: 'white', zIndex: 1 }} key={weekDay}>
-            <Typography
-              role="weekday"
-              variant="h6"
-              sx={{ color: colors.mainTextColor, textAlign: 'center', }}
-            >
-              {weekDay}
-            </Typography>
-          </Grid>))}
+            {weekDays.map((weekDay) => (<Grid item xs={1.7} sx={{ position: 'sticky', top: 0, backgroundColor: 'white', zIndex: 1 }} key={weekDay}>
+              <Typography
+                role="weekday"
+                variant="h6"
+                sx={{ color: colors.mainTextColor, textAlign: 'center', }}
+              >
+                {weekDay}
+              </Typography>
+            </Grid>))}
 
-          { isLoading ? <TaskListProgress /> : 
+            { isLoading ? <TaskListProgress /> : 
 
-          days.map((dayDate: string) => {
+            days.map((dayDate: string) => {
 
-            const dayTasks = tasks.filter(task => task.due.date === dayDate)
+              const dayTasks = tasks.filter(task => task.due.date === dayDate)
 
-            return (<Grid item xs={1.7} key={dayDate}>
-              <CalendarDay dayDate={dayDate} dayTasks={dayTasks} />
-            </Grid>)
-          })
-        }
+              return (<Grid item xs={1.7} key={dayDate}>
+                <CalendarDay dayDate={dayDate} dayTasks={dayTasks} />
+              </Grid>)
+            })
+          }
 
-        </Grid>
+          </Grid>
 
+        </div>
       </div>
-    </div>
+    </DndProvider>
   )
 }
 

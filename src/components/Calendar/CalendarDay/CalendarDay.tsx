@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { memo, useEffect } from 'react'
 import { tasksAPI } from "@/api/todoAPI"
 import { Task } from '@doist/todoist-api-typescript/dist/types/entities'
 
@@ -12,16 +12,19 @@ import TasksList from "@/components/Calendar/CalendarDay/TasksList/TasksList"
 import DayDialog from '../DayDialog/DayDialog'
 
 import { makeDateTitle } from '@/helpers/dateHelpers'
+import { useDrop } from 'react-dnd'
+import { CircularProgress } from '@mui/material'
+import TaskListProgress from '@/components/TaskListProgress/TaskListProgress'
 
 const paperSizes = {
   height: 200,
   titlePadding: '5px 10px 0',
 }
 
-const CalendarPaper = styled(Paper)(() => ({
+const CalendarPaper = styled(Paper)((props: { isTaskDraggingOver: boolean }) => ({
   display: 'flex',
   flexDirection: 'column',
-  backgroundColor: colors.backgroundYellow,
+  backgroundColor: props.isTaskDraggingOver ? colors.middleYellow : colors.backgroundYellow,
   color: colors.mainTextColor,
   height: paperSizes.height,
   border: `1px ${colors.middleYellow} solid`,
@@ -43,14 +46,17 @@ type CalendarDayProps = {
 
 const CalendarDay: React.FC<CalendarDayProps> = ({
   dayDate,
-  dayTasks
+  dayTasks,
 }): JSX.Element => {
   const [tasks, setTasks] = React.useState<Array<Task>>()
-  
+  const [isTasksListLoading, setIsTasksListLoading] = React.useState(false)
+
   const updateTasks = async (): Promise<Task[]> => {
     if (!dayDate) return
+    setIsTasksListLoading(true)
     const gottenTasks: Task[] = await getTasks(dayDate)
     setTasks(gottenTasks)
+    setIsTasksListLoading(false)
   }
 
   const dayTitle: string = makeDateTitle(dayDate)
@@ -69,8 +75,25 @@ const CalendarDay: React.FC<CalendarDayProps> = ({
     setOpenDay(false)
   }
 
+  const [{ isTaskDraggingOver }, drop] = useDrop(() => ({
+    accept: 'task',
+    drop: (item: { id: string, updateOldTasks: (dayDate: string) => void, oldDate: string }) => {
+      setIsTasksListLoading(true)
+      tasksAPI.updateTask(item.id, { dueString: dayDate })
+        .then(() => item.updateOldTasks(item.oldDate))
+        .then(() => {
+          updateTasks()
+          setIsTasksListLoading(false)
+        })
+        .catch(console.error)
+    },
+    collect: monitor => ({
+      isTaskDraggingOver: !!monitor.isOver(),
+    }),
+  }), [])
+
   return (
-    <CalendarPaper>
+    <CalendarPaper ref={drop} isTaskDraggingOver={isTaskDraggingOver} >
       <Typography
         variant="h6"
         sx={{
@@ -80,13 +103,13 @@ const CalendarDay: React.FC<CalendarDayProps> = ({
         role="heading"
         onClick={handleClickOpenDay}>{dayTitle}
       </Typography>
-
-      <TasksList
-        className={CalendarDayCss.tasksList}
-        tasks={tasks}
-        updateTasks={updateTasks}
-        dayDate={dayDate}
-      />
+      { !isTasksListLoading ? 
+        <TasksList
+          className={CalendarDayCss.tasksList}
+          tasks={tasks}
+          updateTasks={updateTasks}
+          dayDate={dayDate}
+        /> : <TaskListProgress /> }
 
       <DayDialog
         open={openDay}

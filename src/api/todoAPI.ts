@@ -33,4 +33,13 @@ export const tasksAPI: TasksAPI = {
       console.log(err)
     }
   },
+
+  async updateTask(id, args) {
+    try {
+      const updatedTask = todoAPI.updateTask(id, args)
+      return updatedTask
+    } catch (err) {
+      console.log(err)
+    }
+  },
 }
