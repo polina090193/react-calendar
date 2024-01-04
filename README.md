@@ -1,5 +1,6 @@
 # React calendar
 React app using Todoist API.
+It was an exercise before the calendar view was done by Todoist team :)
 
 - [Todoist API](https://developer.todoist.com/rest/v1/#javascript-sdk)
 - [TypeScript](https://www.typescriptlang.org/)
